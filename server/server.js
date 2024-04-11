@@ -17,6 +17,54 @@ mogoose.connect(process.env.DB_LOCATION, {
     autoIndex:true
 })
 
+let emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/; // regex for email
+let passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/; // regex for password
+
+
+
+
+server.post("/api/signup", (req, res) => {
+
+    let { fullname, email, password } = req.body;
+
+    if (fullname.length < 3) {
+        return res.status(400).json({ "Error ": "Fullname must be atleast three character" });
+    }
+    if (!email.length) {
+        return res.status(400).json({ "Error ": "Enter email" });
+    }
+    if (!emailRegex.test(email)) {
+        return res.status(400).json({ "Error": "Email is invalid" });
+    }
+    if (!passwordRegex.test(password)) {
+        return res.status(400).json({ "Error": "Password should be atleast 6 to 8 characters long with one lovercase,one uppercase and one numeric" })
+    }
+
+    bcrypt.hash(password, 10, async (err, hashed_password) => {
+        // let username = email.split("@")[0];
+
+        let username = await generateUsername(email);
+        // console.log(username);
+
+        let user = new User({
+            personal_info: { fullname, email, password: hashed_password, username }
+        })
+
+        user.save().then((u) => {
+            return res.status(200).json(formatDataToSend(u));
+        }).catch(err => {
+            if (err.code == 11000) {
+                return res.status(400).json({ "Error": "Email is already exist" })
+            }
+            return res.status(500).json({ "Error ": err.message })
+        })
+    })
+
+
+
+
+    // return res.status(200).json({ "success": "data sent successfuly" });
+})
 
 
 server.listen(PORT, () => {
