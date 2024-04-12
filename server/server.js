@@ -21,7 +21,25 @@ let emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/; // regex for e
 let passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/; // regex for password
 
 
+const generateUsername = async (email) => {
+    let username = email.split("@")[0];
 
+    const isUsernameExist = await User.exists({ "personal_info.username": username }).then(user => user);
+    //    console.log(isUsernameExist);
+    isUsernameExist ? username += nanoid().substring(0, 5) : "";
+    return username;
+}
+
+const formatDataToSend = (user) => {
+
+    const access_token = jwt.sign({id:user._id},process.env.SECRET_ACCESS_KEY)
+    return {
+        profile_img: user.personal_info.profile_img,
+        username: user.personal_info.username,
+        fullname: user.personal_info.fullname,
+        access_token
+    }
+}
 
 server.post("/api/signup", (req, res) => {
 
@@ -65,7 +83,6 @@ server.post("/api/signup", (req, res) => {
 
     // return res.status(200).json({ "success": "data sent successfuly" });
 })
-
 
 server.listen(PORT, () => {
     console.log("listning on Port: ",PORT);
