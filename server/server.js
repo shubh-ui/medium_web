@@ -84,6 +84,36 @@ server.post("/api/signup", (req, res) => {
     // return res.status(200).json({ "success": "data sent successfuly" });
 })
 
+server.post("/api/signin",(req, res) => {
+    let { email, password } = req.body;
+
+    // console.log(email)
+    User.findOne({"personal_info.email":email}).then(user => {
+
+        // console.log(user)
+        if(!user){
+            return res.status(403).json({"Error": "Email not found"})
+        }
+
+        bcrypt.compare(password, user.personal_info.password,(err,result) => {
+            if(err){
+                return res.status(403).json({"Error": "Error occured while logging Please try again.."});
+            }
+            if(!result){
+                return res.status(403).json({"Error":"username or password wrong"});
+            }
+            else{
+                return res.status(200).json(formatDataToSend(user));
+            }
+        })
+        // return res.status(200).json({"status":"success, Got user doc",});
+    
+    }).catch(err => {
+        return res.status(500).json({"Error": err.message})
+    })
+
+})
+
 server.listen(PORT, () => {
     console.log("listning on Port: ",PORT);
 })
