@@ -1,14 +1,19 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import logo from "../imgs/logo.png"
 import {Link, Outlet} from "react-router-dom"
+import { Toaster } from "react-hot-toast";
+import { userContext } from "../App";
 
 
 const Navabar = () => {
 
-    const [searchBoxVisibility, setSearchBoxVisibility] = useState(false)
+    const [searchBoxVisibility, setSearchBoxVisibility] = useState(false);
+
+    const {userAuth, userAuth : { access_token, profile_img },} = useContext(userContext);
 
     return (
       <>
+      <Toaster />
       <nav className="navbar">
         <Link to="/" className="flex-none w-10">
           <img src={logo} className="w-full" />
@@ -36,13 +41,27 @@ const Navabar = () => {
             <p>write</p>
         </Link>
 
-        <Link to="/signin" className="btn-dark py-2">
-            Sign In
-        </Link>
+        {
+          access_token ? 
+          <> 
+            <Link>
+              <button className="w-12 h-12 rounded-full bg-grey hover:bg-black/10">
+                <i className="fi fi-rr-bell text-2xl block mt-1"></i>
+              </button>
+            </Link>
+          </> 
+          :
+          <>
+              <Link to="/signin" className="btn-dark py-2">
+              Sign In
+              </Link>
 
-        <Link to="/signup" className="btn-light py-2 hidden md:block">
-            Sign Up
-        </Link>
+            <Link to="/signup" className="btn-light py-2 hidden md:block">
+                Sign Up
+            </Link>
+          </>
+
+        }
       </nav>
 
       <Outlet />
