@@ -10,12 +10,15 @@ import { userContext } from "../App";
 
 const UserAuthForm = ({ type }) => {
 
+  let { userAuth : { access_token}, setUserAuth } = useContext(userContext);
+  console.log("userauth-",access_token);
+
   const userAuthToServer = (serverRout, formData) => {
     const contex = "/api"
     axios.post( contex + serverRout, formData).then(({data}) => {
       console.log(data);
-      // setUserAuth(data)
-      // toast.success("Login Successfully");
+      setUserAuth(data)
+      toast.success("Login Successfully");
       storeInSession("user",JSON.stringify(data));
     })
     .catch(({response}) => {
