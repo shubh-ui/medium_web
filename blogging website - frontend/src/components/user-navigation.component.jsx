@@ -2,6 +2,7 @@ import React, { useContext } from 'react'
 import AnimationWrapper from '../common/page-animation'
 import { Link } from 'react-router-dom'
 import { userContext } from '../App'
+// import { removeFromSession } from '../common/session'
 
 const UserNavigationPanel = () => {
 
@@ -32,6 +33,11 @@ const UserNavigationPanel = () => {
 
 
         <span className='absolute border-top border-gray w-[100%]'></span>
+
+        <button className='text-left p-4 hover:bg-grey pl-8 w-full'>
+          <h1 className='font-bold text-xl mg-1'>sign out</h1>
+          <p className='text-dark-gray'>@{username}</p>
+        </button>
 
       </div>
     </AnimationWrapper>
