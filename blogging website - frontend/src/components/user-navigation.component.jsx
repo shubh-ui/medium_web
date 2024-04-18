@@ -2,11 +2,18 @@ import React, { useContext } from 'react'
 import AnimationWrapper from '../common/page-animation'
 import { Link } from 'react-router-dom'
 import { userContext } from '../App'
-// import { removeFromSession } from '../common/session'
+import { removeFromSession } from '../common/session'
+import {toast } from "react-hot-toast"
 
 const UserNavigationPanel = () => {
 
-    const {userAuth:{username}} = useContext(userContext)
+    const {userAuth:{username}, setUserAuth} = useContext(userContext)
+
+    const signOutUser = () => {
+      removeFromSession('user');
+      setUserAuth({ access_token: null});
+      toast.success("sign out successfully.")
+    }
 
   return (
     <AnimationWrapper transition={{ duration: 0.2 }}
@@ -34,7 +41,9 @@ const UserNavigationPanel = () => {
 
         <span className='absolute border-top border-gray w-[100%]'></span>
 
-        <button className='text-left p-4 hover:bg-grey pl-8 w-full'>
+        <button className='text-left p-4 hover:bg-grey pl-8 w-full'
+          onClick={signOutUser}
+        >
           <h1 className='font-bold text-xl mg-1'>sign out</h1>
           <p className='text-dark-gray'>@{username}</p>
         </button>
