@@ -3,6 +3,8 @@ import logo from "../imgs/logo.png"
 import {Link, Outlet} from "react-router-dom"
 import { Toaster } from "react-hot-toast";
 import { userContext } from "../App";
+import UserNavigationPanel from "./user-navigation.component";
+
 
 
 const Navabar = () => {
@@ -49,6 +51,13 @@ const Navabar = () => {
                 <i className="fi fi-rr-bell text-2xl block mt-1"></i>
               </button>
             </Link>
+
+            <div className="relative">
+              <button className="w-12 h-12 mt-1">
+                <img src={profile_img} alt="Profile Image" className="w-full h-fll object-cover rounded-full" />
+              </button>
+              <UserNavigationPanel />
+            </div>
           </> 
           :
           <>
