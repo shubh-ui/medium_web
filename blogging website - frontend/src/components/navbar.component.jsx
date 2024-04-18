@@ -11,7 +11,13 @@ const Navabar = () => {
 
     const [searchBoxVisibility, setSearchBoxVisibility] = useState(false);
 
+    const [userNavPanel, setUsernNavPanel] = useState(true);
+
     const {userAuth, userAuth : { access_token, profile_img },} = useContext(userContext);
+
+    const handleUserNavPanel = () => {
+      setUsernNavPanel(currentVal => !currentVal);
+    }
 
     return (
       <>
@@ -53,11 +59,11 @@ const Navabar = () => {
             </Link>
 
             <div className="relative">
-              <button className="w-12 h-12 mt-1">
+              <button className="w-12 h-12 mt-1" onClick={handleUserNavPanel}>
                 <img src={profile_img} alt="Profile Image" className="w-full h-fll object-cover rounded-full" />
               </button>
-              <UserNavigationPanel />
-            </div>
+              { userNavPanel && <UserNavigationPanel /> }
+            </div> 
           </> 
           :
           <>
