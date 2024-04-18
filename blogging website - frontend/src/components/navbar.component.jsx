@@ -19,6 +19,10 @@ const Navabar = () => {
       setUsernNavPanel(currentVal => !currentVal);
     }
 
+    const handleBlurNav = () => {
+      setUsernNavPanel(false);
+    }
+
     return (
       <>
       <Toaster />
@@ -59,7 +63,7 @@ const Navabar = () => {
             </Link>
 
             <div className="relative">
-              <button className="w-12 h-12 mt-1" onClick={handleUserNavPanel}>
+              <button className="w-12 h-12 mt-1" onClick={handleUserNavPanel} onBlur={handleBlurNav}>
                 <img src={profile_img} alt="Profile Image" className="w-full h-fll object-cover rounded-full" />
               </button>
               { userNavPanel && <UserNavigationPanel /> }
