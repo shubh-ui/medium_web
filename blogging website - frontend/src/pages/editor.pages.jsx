@@ -1,7 +1,14 @@
-const EditorPage = () => {
+import { useContext } from "react";
+import { userContext } from "../App";
+import { Navigate } from "react-router-dom";
+
+const Editor = () => {
+
+    let { userAuth: { access_token} } = useContext(userContext);
+
     return (
-        <h1>Editor Page!</h1>
+        access_token === null ? <Navigate to="/signin" /> : <h1>You can access the editor page</h1>
     )
 }
 
-export default EditorPage;
+export default Editor;
