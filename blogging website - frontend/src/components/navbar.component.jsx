@@ -11,7 +11,7 @@ const Navabar = () => {
 
     const [searchBoxVisibility, setSearchBoxVisibility] = useState(false);
 
-    const [userNavPanel, setUsernNavPanel] = useState(true);
+    const [userNavPanel, setUsernNavPanel] = useState(false);
 
     const {userAuth, userAuth : { access_token, profile_img },} = useContext(userContext);
 
@@ -20,7 +20,9 @@ const Navabar = () => {
     }
 
     const handleBlurNav = () => {
+      setTimeout(() => {
       setUsernNavPanel(false);
+      }, 300);
     }
 
     return (
