@@ -4,6 +4,12 @@ import AnimationWrapper from "../common/page-animation";
 import BlogBanner from "../imgs/blog banner.png"
 
 const BlogEditor = () => {
+    
+    const handleBannerUpload = (e) => {
+        const img = e.target.files[0];
+        console.log(img);
+    }
+
     return (
         <>
             <nav className="navbar">
@@ -24,7 +30,18 @@ const BlogEditor = () => {
                 </div>
             </nav>  
 
-               
+            <AnimationWrapper>
+                <section>
+                    <div className="mx-auto max-w-[900px] w-full">
+                        <div className="relative aspect-video hover:opacity-80 bg-white border-4 border-grey">
+                            <label htmlFor="uploadBanner">
+                                <img src={BlogBanner} alt="blogbanner" className="z-20" />
+                                <input type="file" id="uploadBanner" accept=".png, .jpg, .jpeg" hidden onChange={handleBannerUpload} />
+                            </label>
+                        </div>
+                    </div>
+                </section>    
+            </AnimationWrapper>      
         </>
     )
 }
