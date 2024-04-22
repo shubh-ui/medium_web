@@ -5,6 +5,15 @@ import BlogEditor from "../components/blog-editor.component";
 
 const Editor = () => {
 
+    const blogStructure = {
+        title:'',
+        banner:'',
+        content:[],
+        tags:[],
+        desc:'',
+        auther:{ personal_info:{ } }
+    }
+
     const [editorState, setEditorState] = useState("editor")
 
     let { userAuth: { access_token} } = useContext(userContext);
