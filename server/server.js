@@ -4,6 +4,11 @@ import "dotenv/config";
 import bcrypt from "bcrypt";
 import { nanoid } from "nanoid";
 import jwt from "jsonwebtoken";
+import multer from 'multer';
+import cloudinary from 'cloudinary';
+
+// Import only v2 from cloudinary
+import { v2 as cloudinaryV2 } from 'cloudinary';
 
 import User from "./Schema/User.js";
 
@@ -113,6 +118,25 @@ server.post("/api/signin",(req, res) => {
     })
 
 })
+
+
+cloudinaryV2.config({
+    cloud_name: 'dwmaqqlj9',
+    api_key: '851522418552728',
+    api_secret: 'SdVxrJtRH4r33fvHSPRCHwJ6Oms'
+  });
+  
+  const upload = multer({ dest: 'uploads/' });
+  
+  server.post('/api/upload', upload.single('image'), (req, res) => {
+    cloudinaryV2.uploader.upload(req.file.path, (error, result) => {
+      if (error) {
+        console.error('Error uploading image:', error);
+        return res.status(500).send('Error uploading image.');
+      }
+      res.json({ imageUrl: result.secure_url });
+    });
+  });
 
 server.listen(PORT, () => {
     console.log("listning on Port: ",PORT);
