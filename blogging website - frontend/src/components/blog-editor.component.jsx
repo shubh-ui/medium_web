@@ -40,7 +40,17 @@ const BlogEditor = () => {
         }
     } 
 
+    const handleTitileKeyDown = (e) => {
+        if(e.keyCode == 13) { //Enter Key
+            e.preventDefault();
+        }
+    }
 
+    const handleTitleChange = (e) => {
+        let input = e.target;
+        input.style.height = "auto";
+        input.style.height = input.scrollHeight + "px"
+    }
 
     return (
         <>
@@ -74,7 +84,8 @@ const BlogEditor = () => {
                                 <textarea
                                      className="text-4xl font-medium w-full h-20 outline-none resize-none mt-10 leading-tight placeholder:opacity-40"
                                      name="blog-title" id="blog-title" placeholder="Blog-Title"
-                              
+                                     onKeyDown={handleTitileKeyDown}
+                                     onChange={handleTitleChange}
                                      >
 
                                 </textarea>
