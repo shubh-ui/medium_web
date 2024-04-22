@@ -2,13 +2,45 @@ import { Link } from "react-router-dom"
 import Logo  from "../imgs/logo.png"
 import AnimationWrapper from "../common/page-animation";
 import BlogBanner from "../imgs/blog banner.png"
+import { Toaster, toast} from "react-hot-toast"
+
+
+import axios from "axios"
+import { useRef } from "react";
 
 const BlogEditor = () => {
+
+    let blogBannerRef = useRef();
+    const context = "/api";
     
-    const handleBannerUpload = (e) => {
+    const handleBannerUpload = async (e) => {
         const img = e.target.files[0];
         console.log(img);
-    }
+        if(img) {
+            const toastId = toast.loading('Loading...');
+            const urlCd = "/upload";
+            const formData = new FormData();
+            formData.append('image', img);
+        
+            try {
+              const response = await axios.post(context + urlCd, formData, {
+                headers: {
+                  'Content-Type': 'multipart/form-data'
+                }
+              });
+              console.log(response)
+              if(response){
+                toast.dismiss(toastId);
+                blogBannerRef.current.src = response.data.imageUrl;
+
+              }
+            } catch (error) {
+              console.error('Error :', error);
+            }
+        }
+    } 
+
+
 
     return (
         <>
@@ -31,12 +63,21 @@ const BlogEditor = () => {
             </nav>  
 
             <AnimationWrapper>
+               <Toaster />
                 <section>
                     <div className="mx-auto max-w-[900px] w-full">
                         <div className="relative aspect-video hover:opacity-80 bg-white border-4 border-grey">
                             <label htmlFor="uploadBanner">
-                                <img src={BlogBanner} alt="blogbanner" className="z-20" />
+                                <img ref={blogBannerRef} src={BlogBanner} alt="blogbanner" className="z-20" />
                                 <input type="file" id="uploadBanner" accept=".png, .jpg, .jpeg" hidden onChange={handleBannerUpload} />
+
+                                <textarea
+                                     className="text-4xl font-medium w-full h-20 outline-none resize-none mt-10 leading-tight placeholder:opacity-40"
+                                     name="blog-title" id="blog-title" placeholder="Blog-Title"
+                              
+                                     >
+
+                                </textarea>
                             </label>
                         </div>
                     </div>
