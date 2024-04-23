@@ -8,9 +8,19 @@ import { Toaster, toast} from "react-hot-toast"
 import axios from "axios"
 import { useContext, useEffect } from "react";
 import { editorContext } from "../pages/editor.pages";
-
+import EditorJs from "@editorjs/editorjs"
+import { tools } from "./tools.component";
 
 const BlogEditor = () => {
+
+    useEffect(() => {
+        let editor = new EditorJs({
+            holder:textEditor,
+            data:'',
+            tools:tools,
+            placeholder:'Lets write an awesome story..'
+        })
+    },[])
 
     let { blog, blog:{ title, banner, tags, desc, content}, setBlog } = useContext(editorContext);
 
@@ -102,6 +112,7 @@ const BlogEditor = () => {
                                      >
 
                                 </textarea>
+                                <div id="textEditor" className="font-galasio"></div>
                         </div>
                     </div>
                 </section>    
