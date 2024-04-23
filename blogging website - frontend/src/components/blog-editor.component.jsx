@@ -13,16 +13,17 @@ import { tools } from "./tools.component";
 
 const BlogEditor = () => {
 
+    let { blog, blog:{ title, banner, tags, desc, content}, setBlog, setTexteditor } = useContext(editorContext);
+
     useEffect(() => {
-        let editor = new EditorJs({
+        setTexteditor(new EditorJs({
             holder:textEditor,
             data:'',
             tools:tools,
             placeholder:'Lets write an awesome story..'
-        })
+        }))
     },[])
 
-    let { blog, blog:{ title, banner, tags, desc, content}, setBlog } = useContext(editorContext);
 
     // let blogBannerRef = useRef();
     const context = "/api";
