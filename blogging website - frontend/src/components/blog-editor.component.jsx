@@ -6,11 +6,15 @@ import { Toaster, toast} from "react-hot-toast"
 
 
 import axios from "axios"
-import { useRef } from "react";
+import { useContext, useEffect } from "react";
+import { editorContext } from "../pages/editor.pages";
+
 
 const BlogEditor = () => {
 
-    let blogBannerRef = useRef();
+    let { blog, blog:{ title, banner, tags, desc, content}, setBlog } = useContext(editorContext);
+
+    // let blogBannerRef = useRef();
     const context = "/api";
     
     const handleBannerUpload = async (e) => {
@@ -29,9 +33,11 @@ const BlogEditor = () => {
                 }
               });
               console.log(response)
-              if(response){
-                toast.dismiss(toastId);
-                blogBannerRef.current.src = response.data.imageUrl;
+              toast.dismiss(toastId);
+              if(response.data.imageUrl){
+
+                setBlog({ ...blog, banner:response.data.imageUrl})
+                // blogBannerRef.current.src = response.data.imageUrl;
 
               }
             } catch (error) {
@@ -50,6 +56,13 @@ const BlogEditor = () => {
         let input = e.target;
         input.style.height = "auto";
         input.style.height = input.scrollHeight + "px"
+
+        setBlog({...blog, title:input.value})
+    }
+
+    const handleBannerError = (e) => {
+        let img = e.target;
+        img.src = BlogBanner;
     }
 
     return (
@@ -59,7 +72,7 @@ const BlogEditor = () => {
                     <img src={Logo} alt="Homelogo" />
                 </Link>
 
-                <p className="max-md:hidden text-black w-full line-clamp-1">New Blog</p>
+                <p className="max-md:hidden text-black w-full line-clamp-1">{ title.length ? title : "New Blog" }</p>
 
                 <div className="flex gap-4 ml-auto">
                     <button className="btn-dark py-2">
@@ -78,10 +91,10 @@ const BlogEditor = () => {
                     <div className="mx-auto max-w-[900px] w-full">
                         <div className="relative aspect-video hover:opacity-80 bg-white border-4 border-grey">
                             <label htmlFor="uploadBanner">
-                                <img ref={blogBannerRef} src={BlogBanner} alt="blogbanner" className="z-20" />
+                                <img src={banner} onError={handleBannerError} alt="blog banner" className="z-20" />
                                 <input type="file" id="uploadBanner" accept=".png, .jpg, .jpeg" hidden onChange={handleBannerUpload} />
-
-                                <textarea
+                            </label>
+                            <textarea
                                      className="text-4xl font-medium w-full h-20 outline-none resize-none mt-10 leading-tight placeholder:opacity-40"
                                      name="blog-title" id="blog-title" placeholder="Blog-Title"
                                      onKeyDown={handleTitileKeyDown}
@@ -89,7 +102,6 @@ const BlogEditor = () => {
                                      >
 
                                 </textarea>
-                            </label>
                         </div>
                     </div>
                 </section>    
