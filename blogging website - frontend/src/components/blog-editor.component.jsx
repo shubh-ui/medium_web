@@ -13,11 +13,11 @@ import { tools } from "./tools.component";
 
 const BlogEditor = () => {
 
-    let { blog, blog:{ title, banner, tags, desc, content}, setBlog, setTextEditor } = useContext(editorContext);
+    let { blog, blog:{ title, banner, tags, desc, content}, setBlog, textEditor, setTextEditor, editorState, setEditorState } = useContext(editorContext);
 
     useEffect(() => {
         setTextEditor(new EditorJs({
-            holder:textEditor,
+            holder:text_Editor,
             data:'',
             tools:tools,
             placeholder:'Lets write an awesome story..'
@@ -84,6 +84,21 @@ const BlogEditor = () => {
         if(!title.length) {
             return toast.error("Write a blog title to publish it.")
         }
+
+        if(textEditor.isReady) {
+            textEditor.save().then(data => {
+                // console.log(data);
+                if(data.blocks.length) {
+                    setBlog({ ...blog, content: data.blocks});
+                    setEditorState("publish");
+                }
+                else {
+                    return toast.error("Write somthing in your blog to publish it.");
+                }
+            }).catch(err => {
+                console.error(err);
+            })
+        }
     }
 
     return (
@@ -125,7 +140,7 @@ const BlogEditor = () => {
                                      >
 
                                 </textarea>
-                                <div id="textEditor" className="font-galasio"></div>
+                                <div id="text_Editor" className="font-galasio"></div>
                         </div>
                     </div>
                 </section>    
