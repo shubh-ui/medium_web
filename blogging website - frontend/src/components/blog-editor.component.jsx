@@ -13,10 +13,10 @@ import { tools } from "./tools.component";
 
 const BlogEditor = () => {
 
-    let { blog, blog:{ title, banner, tags, desc, content}, setBlog, setTexteditor } = useContext(editorContext);
+    let { blog, blog:{ title, banner, tags, desc, content}, setBlog, setTextEditor } = useContext(editorContext);
 
     useEffect(() => {
-        setTexteditor(new EditorJs({
+        setTextEditor(new EditorJs({
             holder:textEditor,
             data:'',
             tools:tools,
@@ -76,6 +76,16 @@ const BlogEditor = () => {
         img.src = BlogBanner;
     }
 
+    const handlePublishEvent = () => {
+        if(!banner.length) {
+            return toast.error("Upload a blog banner to publish it.")
+        }
+
+        if(!title.length) {
+            return toast.error("Write a blog title to publish it.")
+        }
+    }
+
     return (
         <>
             <nav className="navbar">
@@ -86,7 +96,9 @@ const BlogEditor = () => {
                 <p className="max-md:hidden text-black w-full line-clamp-1">{ title.length ? title : "New Blog" }</p>
 
                 <div className="flex gap-4 ml-auto">
-                    <button className="btn-dark py-2">
+                    <button className="btn-dark py-2"
+                      onClick={handlePublishEvent}
+                    >
                         Publish
                     </button>
 
