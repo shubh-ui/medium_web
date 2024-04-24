@@ -3,6 +3,7 @@ import { userContext } from "../App";
 import { Navigate } from "react-router-dom";
 import BlogEditor from "../components/blog-editor.component";
 import { createContext } from "react";
+import PublishForm from "../components/publish-form.component";
 
 const blogStructure = {
     title:'',
@@ -27,7 +28,7 @@ const Editor = () => {
     return (
         <editorContext.Provider value={{ blog, setBlog, editorState, setEditorState, textEditor, setTextEditor }}>
             {
-                access_token === null ? <Navigate to="/signin" /> : editorState === "editor" ? <BlogEditor /> : <h1>Publish form</h1>
+                access_token === null ? <Navigate to="/signin" /> : editorState === "editor" ? <BlogEditor /> : <PublishForm />
             }
         </editorContext.Provider>
     )
