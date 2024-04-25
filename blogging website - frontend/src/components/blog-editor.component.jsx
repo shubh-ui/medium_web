@@ -18,7 +18,7 @@ const BlogEditor = () => {
     useEffect(() => {
         setTextEditor(new EditorJs({
             holder:text_Editor,
-            data:'',
+            data:content,
             tools:tools,
             placeholder:'Lets write an awesome story..'
         }))
@@ -137,6 +137,7 @@ const BlogEditor = () => {
                                      name="blog-title" id="blog-title" placeholder="Blog-Title"
                                      onKeyDown={handleTitileKeyDown}
                                      onChange={handleTitleChange}
+                                     defaultValue={title}
                                      >
 
                                 </textarea>
