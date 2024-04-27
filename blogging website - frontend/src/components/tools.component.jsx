@@ -8,6 +8,32 @@ import Quote from "@editorjs/quote";
 import InlineCode from "@editorjs/inline-code";
 import { uploadImage } from "../common/uploadImage";
 
+const uploadImageByUrl = (e) => {
+    let link = new Promise((resolve, reject) => {
+        try {
+            resolve(e);
+        } catch (error) {
+            reject(error);
+        }
+    })
+    return link.then(url => {
+        return {
+            success:1,
+            file: { url }
+        }
+    }) 
+}
+const uploadImageByFile = (e) => {
+  return uploadImage(e).then(url => {
+    if(url){
+        return {
+            success:1,
+            file :{ url}
+        }
+    }
+  })  
+}
+
 
 export const tools = {
     embed:Embed,
