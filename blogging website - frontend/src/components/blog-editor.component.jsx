@@ -16,6 +16,7 @@ const BlogEditor = () => {
     let { blog, blog:{ title, banner, tags, desc, content}, setBlog, textEditor, setTextEditor, editorState, setEditorState } = useContext(editorContext);
 
     useEffect(() => {
+        console.log(content);
         setTextEditor(new EditorJs({
             holder:text_Editor,
             data:content,
@@ -84,12 +85,13 @@ const BlogEditor = () => {
         if(!title.length) {
             return toast.error("Write a blog title to publish it.")
         }
+        
 
-        if(textEditor.isReady) {
+        if(textEditor.isReady || typeof textEditor.isReady == "object") {
             textEditor.save().then(data => {
                 // console.log(data);
                 if(data.blocks.length) {
-                    setBlog({ ...blog, content: data.blocks});
+                    setBlog({ ...blog, content: data});
                     setEditorState("publish");
                 }
                 else {
