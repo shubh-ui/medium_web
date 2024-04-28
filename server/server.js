@@ -46,6 +46,24 @@ const formatDataToSend = (user) => {
     }
 }
 
+const verifyJWT = (req, res, next) => {
+    const authHeader = req.headers['authorization'];
+    const token = authHeader && authHeader.split(" ")[1];
+
+    if(token == null || token == undefined) {
+        return res.status(403).json({error: "No access token",req:req.headers});
+    }
+
+    jwt.verify(token, process.env.SECRET_ACCESS_KEY, (err, user) => {
+        if(err) {
+            return res.status(404).json({error:"Access token is invalid"});
+        }
+
+        req.user = user.id;
+        next()
+    })
+}
+
 server.post("/api/signup", (req, res) => {
 
     let { fullname, email, password } = req.body;
@@ -137,6 +155,12 @@ cloudinaryV2.config({
       res.json({ imageUrl: result.secure_url });
     });
   });
+
+
+  server.post('/api/create-blog', verifyJWT, (req, res) => {
+    // console.log(req.body);
+    return res.send(req.body);
+  })
 
 server.listen(PORT, () => {
     console.log("listning on Port: ",PORT);
