@@ -1,4 +1,4 @@
-import { Toaster } from "react-hot-toast";
+import toast, { Toaster } from "react-hot-toast";
 import AnimationWrapper from "../common/page-animation";
 import { useContext } from "react";
 import { editorContext } from "../pages/editor.pages";
@@ -40,8 +40,11 @@ const PublishForm = () => {
           if(!tags.includes(tag) && tag?.length) {
             setBlog({ ...blog, tags: [...tags, tag]})
           }
-          e.target.value ="";
         }
+        else{
+          toast.error(`You can add maximum ${tagLimit} tags`)
+        }
+        e.target.value ="";
       }
     }
     
@@ -58,7 +61,7 @@ const PublishForm = () => {
           </button>
 
           <div className="max-w-[550px] center">
-            <p className="text-dark-grey mb-1">Preview</p>
+            <p className="text-dark-grey mb-1 text-xl">Preview</p>
             <div className="w-full aspect-video rounded-lg overflow-hidden bg-grey mt-4">
               <img src={banner} alt="" />
             </div>
@@ -107,13 +110,15 @@ const PublishForm = () => {
                 onKeyDown={handleKeyDown}
               />
 
-              {
-                tags.map((tag, i)=> (
-                  <Tags tag={tag} key={i} />
-                ))
-              }
-
+              {tags.map((tag, i) => (
+                <Tags tag={tag} key={i} />
+              ))}
             </div>
+            <p className="mt-1 mb-4 text-dark-grey text-sm text-right">
+                {tagLimit - tags.length} Tags left
+              </p>
+
+              <button className="btn-dark px-8">Publish</button>
           </div>
         </section>
       </AnimationWrapper>
