@@ -51,7 +51,7 @@ const verifyJWT = (req, res, next) => {
     const token = authHeader && authHeader.split(" ")[1];
 
     if(token == null || token == undefined) {
-        return res.status(403).json({error: "No access token",req:req.headers});
+        return res.status(403).json({error: "No access token"});
     }
 
     jwt.verify(token, process.env.SECRET_ACCESS_KEY, (err, user) => {
