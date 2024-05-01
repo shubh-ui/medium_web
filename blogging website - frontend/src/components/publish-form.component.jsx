@@ -6,7 +6,7 @@ import Tags from "./tags.component";
 
 const PublishForm = () => {
 
-    let { blog, blog:{ title, banner, tags, desc, content}, setBlog, textEditor, setTextEditor, editorState, setEditorState } = useContext(editorContext);
+    let { blog, blog:{ title, banner, tags, des, content}, setBlog, textEditor, setTextEditor, editorState, setEditorState } = useContext(editorContext);
     let {  } = useContext(editorContext);
     const characterLimit =200;
     const tagLimit = 10;
@@ -23,7 +23,7 @@ const PublishForm = () => {
 
     const handleBlogDescriptionChange = (e) => {
         let input = e.target;
-        setBlog({ ...blog, desc: input.value})
+        setBlog({ ...blog, des: input.value})
     }
 
     const handleTitileKeyDown = (e) => {
@@ -69,7 +69,7 @@ const PublishForm = () => {
               {title}
             </h1>
             <p className="font-gelasio line-clamp-2 text-xl leading-7 mt-4">
-              {desc}
+              {des}
             </p>
           </div>
 
@@ -88,14 +88,14 @@ const PublishForm = () => {
             </h1>
             <textarea
               className="h-40 input-box leading-7 resize-none pl-4"
-              name="blog-desc"
-              defaultValue={desc}
+              name="blog-des"
+              defaultValue={des}
               maxLength={characterLimit}
               onChange={handleBlogDescriptionChange}
               onKeyDown={handleTitileKeyDown}
             ></textarea>
             <p className="mt-1 text-dark-grey text-sm text-right">
-              {characterLimit - desc.length} Characters left
+              {characterLimit - des.length} Characters left
             </p>
 
             <h1 className="mt-1 text-dark-grey text-sm">
