@@ -160,16 +160,15 @@ cloudinaryV2.config({
   server.post('/api/create-blog', verifyJWT, (req, res) => {
     // console.log(req.body);
     let autherId = req.user;
-    console.log(autherId)
 
-    let { title, desc, tags, banner, content, draft } = req.body;
+    let { title, des, tags, banner, content, draft } = req.body;
 
     if(title == undefined || !title.length) {
         return res.status(404).json({ error: "You must provide a blog title to publish blog."})
     }
 
-    if(desc == undefined || !desc.length) {
-        return res.status(404).json({ error: "You must provide a blog desc to publish blog."})
+    if(des == undefined || !des.length) {
+        return res.status(404).json({ error: "You must provide a blog des to publish blog."})
     }
 
     if(tags == undefined || !tags.length) {
@@ -183,6 +182,11 @@ cloudinaryV2.config({
     if(content == undefined || !content.blocks.length) {
         return res.status(404).json({ error: "You must provide a blog content to publish blog."})
     }
+
+    tags = tags.map(tag => tag.toLowerCase());
+
+    let blogId = title.replace(/[^a-zA-Z0-9]/g, ' ').replace(/\s+/g, '-').trim() + nanoid();
+    console.log(blogId);
 
     return res.send(req.body);
   })
