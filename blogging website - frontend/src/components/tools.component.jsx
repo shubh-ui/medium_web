@@ -44,14 +44,10 @@ const uploadImageByFile = (file) => {
 };
 
 const uploadImage = async (file) => {
-    // Implement your image upload logic here
-    // This could involve using a library or making an API call to upload the image file
-    // For now, let's assume it simply returns a mock URL after some processing
     console.log(file);
     let imageUrl;
 
     if(file) {
-        // const toastId = toast.loading('Loading...');
         const context = "/api";
         const urlCd = "/upload";
         const formData = new FormData();
