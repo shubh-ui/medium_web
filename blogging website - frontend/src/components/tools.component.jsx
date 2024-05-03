@@ -60,12 +60,9 @@ const uploadImage = async (file) => {
             }
           });
           console.log(response)
-        //   toast.dismiss(toastId);
           if(response.data.imageUrl){
 
-            // setBlog({ ...blog, banner:response.data.imageUrl})
             imageUrl = response.data.imageUrl;
-            // blogBannerRef.current.src = response.data.imageUrl;
             return imageUrl;
 
           }
