@@ -1,5 +1,16 @@
+import { useContext } from "react";
+import { editorContext } from "../pages/editor.pages";
 
 const Tags = ({tag = ""}) => {
+
+    let { blog: { tags}, blog, setBlog } = useContext(editorContext)
+
+    const handleTagDelet = () => {
+
+        tags = tags.filter(t => t !== tag);
+        setBlog({ ...blog, tags:tags});
+
+    }
 
     return (
       <div className="relative p-2 mt-2 ml-2 px-4 bg-white rounded-full inline-block hover:bg-opacity-50 pr-8">
