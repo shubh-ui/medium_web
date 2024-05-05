@@ -6,6 +6,7 @@ import { nanoid } from "nanoid";
 import jwt from "jsonwebtoken";
 import multer from 'multer';
 import cloudinary from 'cloudinary';
+import blogs from "./Schema/Blog.js"
 
 // Import only v2 from cloudinary
 import { v2 as cloudinaryV2 } from 'cloudinary';
@@ -187,6 +188,10 @@ cloudinaryV2.config({
 
     let blogId = title.replace(/[^a-zA-Z0-9]/g, ' ').replace(/\s+/g, '-').trim() + nanoid();
     console.log(blogId);
+
+    let blog = new Blog({
+        title, des, banner, auther: autherId, blog_id: blogId, tags, content, draft: Boolean(draft)
+    })
 
     return res.send(req.body);
   })
