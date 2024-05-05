@@ -193,6 +193,12 @@ cloudinaryV2.config({
         title, des, banner, auther: autherId, blog_id: blogId, tags, content, draft: Boolean(draft)
     })
 
+    blogs.save().then(blog => {
+        let incrementVal = draft ? 0 : 1;
+
+        User.findOneAndUpdate({ _id:autherId }, { $inc: { "account_info.total_posts": incrementVal } , $push: { "blogs" : blog} })
+    })
+
     return res.send(req.body);
   })
 
