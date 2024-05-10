@@ -47,6 +47,32 @@ const PublishForm = () => {
         e.target.value ="";
       }
     }
+
+    const bublishBlog = (e) => {
+
+      if(e.target.className.includes("disable")){
+        return;
+      }
+
+      if(!title.length) {
+        return toast.error("You must provide a blog title to publish a blog.")
+      }
+      if(!des.length || des.length > characterLimit) {
+        return toast.error("You must provide a blog description to publish a blog")
+      }
+      if(!tags.length) {
+        return toast.error("You must provide a tags to rank your blog.")
+      }
+
+      let loading = toast.loading("Loading...");
+
+      e.target.classList.add("disable");
+
+      let blog = {
+        title, des, banner, tags, content, draft:false
+      }
+
+    }
     
     return (
       <AnimationWrapper>
@@ -118,7 +144,7 @@ const PublishForm = () => {
                 {tagLimit - tags.length} Tags left
               </p>
 
-              <button className="btn-dark px-8">Publish</button>
+              <button className="btn-dark px-8" onClick={bublishBlog}>Publish</button>
           </div>
         </section>
       </AnimationWrapper>
