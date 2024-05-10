@@ -4,12 +4,23 @@ import { useContext } from "react";
 import { editorContext } from "../pages/editor.pages";
 import Tags from "./tags.component";
 import axios from "axios";
+import { userContext } from "../App";
 
 const PublishForm = () => {
 
-    let { blog, blog:{ title, banner, tags, des, content}, setBlog, textEditor, setTextEditor, editorState, setEditorState } = useContext(editorContext);
-    let {  } = useContext(editorContext);
-    const characterLimit =200;
+    let {
+      blog,
+      blog: { title, banner, tags, des, content },
+      setBlog,
+      textEditor,
+      setTextEditor,
+      editorState,
+      setEditorState,
+    } = useContext(editorContext);
+    let {} = useContext(editorContext);
+    const [userAuth, setUserAuth] = useState({});
+    let { userAuth: { access_token } } = useContext(userContext);
+    const characterLimit = 200;
     const tagLimit = 10;
 
 
@@ -76,7 +87,18 @@ const PublishForm = () => {
         title, des, banner, tags, content, draft:false
       }
 
-      axios.post(context + urlCd,blogObj) 
+      axios
+        .post(context + urlCd, blogObj, {
+          headers: {
+            Authorization: access_token,
+          },
+        })
+        .then(() => {
+          e.target.classList.remove("disable");
+          toast.dismiss(loading);
+          toast.success("Published...");
+        })
+        .catch((err) => console.log(err));
 
     }
     
