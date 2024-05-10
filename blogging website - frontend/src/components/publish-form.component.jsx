@@ -3,6 +3,7 @@ import AnimationWrapper from "../common/page-animation";
 import { useContext } from "react";
 import { editorContext } from "../pages/editor.pages";
 import Tags from "./tags.component";
+import axios from "axios";
 
 const PublishForm = () => {
 
@@ -50,6 +51,9 @@ const PublishForm = () => {
 
     const bublishBlog = (e) => {
 
+      const context = "/api";
+      const urlCd = "/create-blog";
+
       if(e.target.className.includes("disable")){
         return;
       }
@@ -68,9 +72,11 @@ const PublishForm = () => {
 
       e.target.classList.add("disable");
 
-      let blog = {
+      let blogObj = {
         title, des, banner, tags, content, draft:false
       }
+
+      axios.post(context + urlCd,blogObj) 
 
     }
     
