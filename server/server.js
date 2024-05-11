@@ -194,7 +194,7 @@ cloudinaryV2.config({
         title,
         des,
         banner,
-        auther: autherId,
+        author: autherId,
         blog_id: blogId,
         tags,
         content,
@@ -209,7 +209,7 @@ cloudinaryV2.config({
             { _id: autherId },
             {
               $inc: { "account_info.total_posts": incrementVal },
-              $push: { "blogs": savedBlog_.id }
+              $push: { "blogs": savedBlog._id }
             }
           );
         })
