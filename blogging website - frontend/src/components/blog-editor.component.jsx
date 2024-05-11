@@ -10,10 +10,12 @@ import { useContext, useEffect } from "react";
 import { editorContext } from "../pages/editor.pages";
 import EditorJs from "@editorjs/editorjs"
 import { tools } from "./tools.component";
+import { userContext } from "../App";
 
 const BlogEditor = () => {
 
     let { blog, blog:{ title, banner, tags, des, content}, setBlog, textEditor, setTextEditor, editorState, setEditorState } = useContext(editorContext);
+    let { userAuth:{ access_token} } = useContext(userContext);
 
     useEffect(() => {
         console.log(content);
@@ -103,6 +105,50 @@ const BlogEditor = () => {
         }
     }
 
+    const handleDraft = (e) => {
+      const context = "/api";
+      const urlCd = "/create-blog";
+
+      if(e.target.className.includes("disable")){
+        return;
+      }
+
+      if(!title.length) {
+        return toast.error("You must provide a blog title to saving blog as a draft.");
+      }
+
+      let loading = toast.loading("Saving draft...");
+
+      e.target.classList.add("disable");
+
+      let blogObj = {
+        title, des, banner, tags, content, draft:true
+      }
+
+      axios
+        .post(context + urlCd, blogObj, {
+          headers: {
+            Authorization: access_token,
+          },
+        })
+        .then(() => {
+          e.target.classList.remove("disable");
+          toast.dismiss(loading);
+          toast.success("Saved...");
+
+          setTimeout(() => {
+            navigate("/");
+          },500)
+        })
+        .catch(({ responce }) => {
+          e.target.classList.remove("disable");
+          toast.dismiss(loading);
+          toast.error("Error during saving blog as a draft.");
+          console.log(responce.data.error)
+        });
+
+    }
+
     return (
         <>
             <nav className="navbar">
@@ -119,7 +165,9 @@ const BlogEditor = () => {
                         Publish
                     </button>
 
-                    <button className="btn-light py-2">
+                    <button className="btn-light py-2"
+                        onClick={handleDraft}
+                    >
                         Save Draft
                     </button>
                 </div>
