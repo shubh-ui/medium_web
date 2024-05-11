@@ -5,6 +5,7 @@ import { editorContext } from "../pages/editor.pages";
 import Tags from "./tags.component";
 import axios from "axios";
 import { userContext } from "../App";
+import { useNavigate } from "react-router-dom";
 
 const PublishForm = () => {
 
@@ -22,6 +23,8 @@ const PublishForm = () => {
     let { userAuth: { access_token } } = useContext(userContext);
     const characterLimit = 200;
     const tagLimit = 10;
+
+    const navigate = useNavigate();
 
 
     const handleCloseEvent = () => {
@@ -97,8 +100,17 @@ const PublishForm = () => {
           e.target.classList.remove("disable");
           toast.dismiss(loading);
           toast.success("Published...");
+
+          setTimeout(() => {
+            navigate("/");
+          },500)
         })
-        .catch((err) => console.log(err));
+        .catch(({ responce }) => {
+          e.target.classList.remove("disable");
+          toast.dismiss(loading);
+          toast.error("Error during publishing blog");
+          console.log(responce.data.error)
+        });
 
     }
     
