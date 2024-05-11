@@ -161,6 +161,7 @@ cloudinaryV2.config({
   server.post('/api/create-blog', verifyJWT, (req, res) => {
     // console.log(req.body);
     let autherId = req.user;
+    console.log(req.user);
 
     let { title, des, tags, banner, content, draft } = req.body;
 
@@ -189,17 +190,37 @@ cloudinaryV2.config({
     let blogId = title.replace(/[^a-zA-Z0-9]/g, ' ').replace(/\s+/g, '-').trim() + nanoid();
     console.log(blogId);
 
-    let blog = new Blog({
-        title, des, banner, auther: autherId, blog_id: blogId, tags, content, draft: Boolean(draft)
-    })
-
-    blogs.save().then(blog => {
-        let incrementVal = draft ? 0 : 1;
-
-        User.findOneAndUpdate({ _id:autherId }, { $inc: { "account_info.total_posts": incrementVal } , $push: { "blogs" : blog} })
-    })
-
-    return res.send(req.body);
+    let blog = new blogs({
+        title,
+        des,
+        banner,
+        auther: autherId,
+        blog_id: blogId,
+        tags,
+        content,
+        draft: Boolean(draft)
+      });
+      
+      blog.save()
+       .then((savedBlog) => {
+          const incrementVal = draft? 0 : 1;
+      
+          User.findOneAndUpdate(
+            { _id: autherId },
+            {
+              $inc: { "account_info.total_posts": incrementVal },
+              $push: { "blogs": savedBlog_.id }
+            }
+          );
+        })
+       .then((user) => {
+          console.log("User", user);
+          return res.status(201).json({ id: blog.blog_id });
+        })
+       .catch((err) => {
+          console.error("Error saving blog or updating user:", err);
+          return res.status(500).json({ Error: "Failed to save blog or update user" });
+        });
   })
 
 server.listen(PORT, () => {
