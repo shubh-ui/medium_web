@@ -203,7 +203,8 @@ cloudinaryV2.config({
       
       blog.save()
        .then((savedBlog) => {
-          const incrementVal = draft? 0 : 1;
+          const incrementVal = draft ? 0 : 1;
+          console.log(incrementVal);
       
           User.findOneAndUpdate(
             { _id: autherId },
@@ -211,16 +212,20 @@ cloudinaryV2.config({
               $inc: { "account_info.total_posts": incrementVal },
               $push: { "blogs": savedBlog._id }
             }
-          );
+          )    
+          .then((user) => {
+            console.log("User", user);
+            return res.status(201).json({ id: blog.blog_id });
+          })
+         .catch((err) => {
+            console.error("Error saving blog or updating user:", err);
+            return res.status(500).json({ Error: "Failed to save blog or update user" });
+          });;
         })
-       .then((user) => {
-          console.log("User", user);
-          return res.status(201).json({ id: blog.blog_id });
+        .catch(err => {
+            return res.status(500).json({Error: err.message});
         })
-       .catch((err) => {
-          console.error("Error saving blog or updating user:", err);
-          return res.status(500).json({ Error: "Failed to save blog or update user" });
-        });
+   
   })
 
 server.listen(PORT, () => {
