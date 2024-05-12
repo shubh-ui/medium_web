@@ -1,6 +1,6 @@
 import toast, { Toaster } from "react-hot-toast";
 import AnimationWrapper from "../common/page-animation";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { editorContext } from "../pages/editor.pages";
 import Tags from "./tags.component";
 import axios from "axios";
@@ -93,7 +93,7 @@ const PublishForm = () => {
       axios
         .post(context + urlCd, blogObj, {
           headers: {
-            Authorization: access_token,
+            Authorization: `bearer ${access_token}`,
           },
         })
         .then(() => {
