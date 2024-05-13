@@ -1,8 +1,11 @@
 import React from 'react'
+import InpageNavigation from '../components/inpage-navigation.component'
 
 const Home = () => {
   return (
-    <div>Home</div>
+    <>
+      <InpageNavigation />
+    </>
   )
 }
 
