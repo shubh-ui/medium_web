@@ -1,8 +1,16 @@
 import React from 'react'
 
-const InpageNavigation = () => {
+const InpageNavigation = ({ Routes }) => {
   return (
-    <div>InpageNavigation</div>
+    <div>
+        {
+            Routes.map(route => (
+                <button>
+                    { route }
+                </button>
+            ))
+        }
+    </div>
   )
 }
 
