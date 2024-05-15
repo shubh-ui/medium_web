@@ -157,6 +157,21 @@ cloudinaryV2.config({
     });
   });
 
+  server.get('/api/latest-blogs',(req,res) => {
+    let maxLImit = 5;
+    blogs.find({draft:false})
+    .populate("author", "personal_info.fullname personal_info.profile_img personal_info.username -_id")
+    .sort({ "publishedAt": -1 })
+    .select("blog_id title des banner activity tags publishedAt -_id")
+    .limit(maxLImit)
+    .then(blogs => {
+        return res.status(200).json({blogs});
+    }).catch(err => {
+        return res.status(500).json({error:err.massage});
+    })
+
+  })
+
 
   server.post('/api/create-blog', verifyJWT, (req, res) => {
     // console.log(req.body);
