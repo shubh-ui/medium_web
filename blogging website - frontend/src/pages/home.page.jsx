@@ -43,7 +43,7 @@ const Home = () => {
                       transition={{ duration: 1, delay: i * 0.1 }}
                       key={i}
                     >
-                      <BlogPostCard content={blog} author />
+                      <BlogPostCard content={blog} author={blog.author.personal_info} />
                     </AnimationWrapper>
                   );
                 })
