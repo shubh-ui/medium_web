@@ -4,10 +4,13 @@ import AnimationWrapper from '../common/page-animation'
 import axios from "axios";
 import Loader from '../components/loader.component';
 import BlogPostCard from '../components/blog-post.component';
+import MininamBlogPost from '../components/nobanner-blog-post.component';
 
 
 const Home = () => {
   const [blogs, setBlogs] = useState(null);
+  const [trendingBlogs, setTrendingBlogs] = useState(null);
+
 
   const fetchLatestBlogs = () => {
     const context = "/api";
@@ -20,8 +23,21 @@ const Home = () => {
       .catch((err) => console.error(err.massage));
   };
 
+  
+  const fetchTrendingBlogs = () => {
+    const context = "/api";
+    const urlCd = "/trending-blogs";
+    axios
+      .get(context + urlCd)
+      .then(({ data }) => {
+        setTrendingBlogs(data.blogs);
+      })
+      .catch((err) => console.error(err.massage));
+  };
+
   useEffect(()=> {
     fetchLatestBlogs();
+    fetchTrendingBlogs();
   },[])
 
   return (
@@ -49,11 +65,29 @@ const Home = () => {
                 })
               )}
             </>
+          
+            <>
+              {
+                trendingBlogs == null ? <Loader /> :
+                trendingBlogs.map((blog, i) => {
+                  // {console.log(blog)}
+                  return (
+                    <AnimationWrapper
+                    transition={{ duration: 1, delay: i * 0.1 }}
+                    key={i}
+                    >
+                      <MininamBlogPost blog={blog} author={blog.author} />
+                    </AnimationWrapper>
+                  )
+                })
+              }
+            </>
           </InpageNavigation>
         </div>
 
         {/* trending blogs */}
-        <div></div>
+        <div>
+        </div>
       </section>
     </AnimationWrapper>
   );
