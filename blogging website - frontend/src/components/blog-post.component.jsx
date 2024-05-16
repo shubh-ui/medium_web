@@ -17,7 +17,7 @@ const BlogPostCard = ({content, author}) => {
   let { fullname, profile_img, username } = author;
 
   return (
-    <Link to="/" className="flex">
+    <Link to={`/blog/${id}`} className="flex gap-8 mb-4 pb-5 border-b border-grey items-center">
       <div className="w-full">
         <div className="flex items-center gap-2 mb-7">
           <img
@@ -43,7 +43,7 @@ const BlogPostCard = ({content, author}) => {
         </div>
       </div>
       <div className="h-28 aspect-square bg-grey">
-        <img src={banner} alt="blog_baner" />
+        <img src={banner} alt="blog_baner" className="w-full h-full aspect-square object-cover" />
       </div>
     </Link>
   );
