@@ -38,7 +38,7 @@ const generateUsername = async (email) => {
 
 const formatDataToSend = (user) => {
 
-    const access_token = jwt.sign({id:user._id},process.env.SECRET_ACCESS_KEY)
+    const access_token = jwt.sign({ id: user._id }, process.env.SECRET_ACCESS_KEY)
     return {
         profile_img: user.personal_info.profile_img,
         username: user.personal_info.username,
@@ -51,13 +51,13 @@ const verifyJWT = (req, res, next) => {
     const authHeader = req.headers['authorization'];
     const token = authHeader && authHeader.split(" ")[1];
 
-    if(token == null || token == undefined) {
-        return res.status(403).json({error: "No access token"});
+    if (token == null || token == undefined) {
+        return res.status(403).json({ error: "No access token" });
     }
 
     jwt.verify(token, process.env.SECRET_ACCESS_KEY, (err, user) => {
-        if(err) {
-            return res.status(404).json({error:"Access token is invalid"});
+        if (err) {
+            return res.status(404).json({ error: "Access token is invalid" });
         }
 
         req.user = user.id;
@@ -102,38 +102,35 @@ server.post("/api/signup", (req, res) => {
         })
     })
 
-
-
-
     // return res.status(200).json({ "success": "data sent successfuly" });
 })
 
-server.post("/api/signin",(req, res) => {
+server.post("/api/signin", (req, res) => {
     let { email, password } = req.body;
 
     // console.log(email)
-    User.findOne({"personal_info.email":email}).then(user => {
+    User.findOne({ "personal_info.email": email }).then(user => {
 
         // console.log(user)
-        if(!user){
-            return res.status(403).json({"Error": "Email not found"})
+        if (!user) {
+            return res.status(403).json({ "Error": "Email not found" })
         }
 
-        bcrypt.compare(password, user.personal_info.password,(err,result) => {
-            if(err){
-                return res.status(403).json({"Error": "Error occured while logging Please try again.."});
+        bcrypt.compare(password, user.personal_info.password, (err, result) => {
+            if (err) {
+                return res.status(403).json({ "Error": "Error occured while logging Please try again.." });
             }
-            if(!result){
-                return res.status(403).json({"Error":"username or password wrong"});
+            if (!result) {
+                return res.status(403).json({ "Error": "username or password wrong" });
             }
-            else{
+            else {
                 return res.status(200).json(formatDataToSend(user));
             }
         })
         // return res.status(200).json({"status":"success, Got user doc",});
-    
+
     }).catch(err => {
-        return res.status(500).json({"Error": err.message})
+        return res.status(500).json({ "Error": err.message })
     })
 
 })
@@ -143,61 +140,61 @@ cloudinaryV2.config({
     cloud_name: 'dwmaqqlj9',
     api_key: '851522418552728',
     api_secret: 'SdVxrJtRH4r33fvHSPRCHwJ6Oms'
-  });
-  
-  const upload = multer({ dest: 'uploads/' });
-  
-  server.post('/api/upload', upload.single('image'), (req, res) => {
+});
+
+const upload = multer({ dest: 'uploads/' });
+
+server.post('/api/upload', upload.single('image'), (req, res) => {
     cloudinaryV2.uploader.upload(req.file.path, (error, result) => {
-      if (error) {
-        console.error('Error uploading image:', error);
-        return res.status(500).send('Error uploading image.');
-      }
-      res.json({ imageUrl: result.secure_url });
+        if (error) {
+            console.error('Error uploading image:', error);
+            return res.status(500).send('Error uploading image.');
+        }
+        res.json({ imageUrl: result.secure_url });
     });
-  });
+});
 
-  server.get('/api/latest-blogs',(req,res) => {
+server.get('/api/latest-blogs', (req, res) => {
     let maxLImit = 5;
-    blogs.find({draft:false})
-    .populate("author", "personal_info.fullname personal_info.profile_img personal_info.username -_id")
-    .sort({ "publishedAt": -1 })
-    .select("blog_id title des banner activity tags publishedAt -_id")
-    .limit(maxLImit)
-    .then(blogs => {
-        return res.status(200).json({blogs});
-    }).catch(err => {
-        return res.status(500).json({error:err.massage});
-    })
+    blogs.find({ draft: false })
+        .populate("author", "personal_info.fullname personal_info.profile_img personal_info.username -_id")
+        .sort({ "publishedAt": -1 })
+        .select("blog_id title des banner activity tags publishedAt -_id")
+        .limit(maxLImit)
+        .then(blogs => {
+            return res.status(200).json({ blogs });
+        }).catch(err => {
+            return res.status(500).json({ error: err.massage });
+        })
 
-  })
+})
 
 
-  server.post('/api/create-blog', verifyJWT, (req, res) => {
+server.post('/api/create-blog', verifyJWT, (req, res) => {
     // console.log(req.body);
     let autherId = req.user;
     console.log(req.user);
 
     let { title, des, tags, banner, content, draft } = req.body;
 
-    if(title == undefined || !title.length) {
-        return res.status(404).json({ error: "You must provide a blog title to publish blog."})
+    if (title == undefined || !title.length) {
+        return res.status(404).json({ error: "You must provide a blog title to publish blog." })
     }
 
-    if(des == undefined || !des.length) {
-        return res.status(404).json({ error: "You must provide a blog des to publish blog."})
+    if (des == undefined || !des.length) {
+        return res.status(404).json({ error: "You must provide a blog des to publish blog." })
     }
 
-    if(tags == undefined || !tags.length) {
-        return res.status(404).json({ error: "You must provide a blog tags to publish blog."})
+    if (tags == undefined || !tags.length) {
+        return res.status(404).json({ error: "You must provide a blog tags to publish blog." })
     }
 
-    if(banner == undefined || !banner.length) {
-        return res.status(404).json({ error: "You must provide a blog banner to publish blog."})
+    if (banner == undefined || !banner.length) {
+        return res.status(404).json({ error: "You must provide a blog banner to publish blog." })
     }
 
-    if(content == undefined || !content.blocks.length) {
-        return res.status(404).json({ error: "You must provide a blog content to publish blog."})
+    if (content == undefined || !content.blocks.length) {
+        return res.status(404).json({ error: "You must provide a blog content to publish blog." })
     }
 
     tags = tags.map(tag => tag.toLowerCase());
@@ -214,35 +211,35 @@ cloudinaryV2.config({
         tags,
         content,
         draft: Boolean(draft)
-      });
-      
-      blog.save()
-       .then((savedBlog) => {
-          const incrementVal = draft ? 0 : 1;
-          console.log(incrementVal);
-      
-          User.findOneAndUpdate(
-            { _id: autherId },
-            {
-              $inc: { "account_info.total_posts": incrementVal },
-              $push: { "blogs": savedBlog._id }
-            }
-          )    
-          .then((user) => {
-            console.log("User", user);
-            return res.status(201).json({ id: blog.blog_id });
-          })
-         .catch((err) => {
-            console.error("Error saving blog or updating user:", err);
-            return res.status(500).json({ Error: "Failed to save blog or update user" });
-          });;
+    });
+
+    blog.save()
+        .then((savedBlog) => {
+            const incrementVal = draft ? 0 : 1;
+            console.log(incrementVal);
+
+            User.findOneAndUpdate(
+                { _id: autherId },
+                {
+                    $inc: { "account_info.total_posts": incrementVal },
+                    $push: { "blogs": savedBlog._id }
+                }
+            )
+                .then((user) => {
+                    console.log("User", user);
+                    return res.status(201).json({ id: blog.blog_id });
+                })
+                .catch((err) => {
+                    console.error("Error saving blog or updating user:", err);
+                    return res.status(500).json({ Error: "Failed to save blog or update user" });
+                });;
         })
         .catch(err => {
-            return res.status(500).json({Error: err.message});
+            return res.status(500).json({ Error: err.message });
         })
-   
-  })
+
+})
 
 server.listen(PORT, () => {
-    console.log("listning on Port: ",PORT);
+    console.log("listning on Port: ", PORT);
 })
