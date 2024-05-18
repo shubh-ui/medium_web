@@ -5,12 +5,14 @@ import axios from "axios";
 import Loader from '../components/loader.component';
 import BlogPostCard from '../components/blog-post.component';
 import MininamBlogPost from '../components/nobanner-blog-post.component';
+import { activeTabRef } from '../components/inpage-navigation.component';
 
 
 const Home = () => {
   const [blogs, setBlogs] = useState(null);
   const [trendingBlogs, setTrendingBlogs] = useState(null);
   const categories = ["programing","hollywood","film making","social media", "cooking","tech","finances","travel"];
+  const [pageState, setPageState] = useState("home");
 
 
   const fetchLatestBlogs = () => {
@@ -36,10 +38,30 @@ const Home = () => {
       .catch((err) => console.error(err.massage));
   };
 
+  const loadBlogCategory = (e) => {
+    const category = e.target.innerText.toLowerCase();
+    setBlogs(null);
+    console.log(category);
+    if (category == pageState) {
+      setPageState("home");
+    }
+    else{
+      setPageState(category);
+    }
+
+  };
+
   useEffect(()=> {
-    fetchLatestBlogs();
-    fetchTrendingBlogs();
-  },[])
+    activeTabRef.current.click();
+    
+    if(pageState == "home"){
+      fetchLatestBlogs();
+    }
+    if(!trendingBlogs){
+      fetchTrendingBlogs();
+    }
+
+  },[pageState])
 
   return (
     <AnimationWrapper>
@@ -47,7 +69,7 @@ const Home = () => {
         {/* latest blog.. */}
         <div className="w-full">
           <InpageNavigation
-            Routes={["Home", "Trending Blogs"]}
+            Routes={[pageState, "Trending Blogs"]}
             defaultHidden={["Trending Blogs"]}
           >
             <>
@@ -104,7 +126,9 @@ const Home = () => {
             <div className='flex gap-3 flex-wrap'>
                 {
                   categories.map((category,i) => {
-                      return <button className='tag' key={i}>
+                      return <button className={'tag ' + (category == pageState ? "bg-black text-white" : "")} key={i}
+                        onClick={loadBlogCategory}
+                      >
                           { category }
                       </button>
                   })
