@@ -11,7 +11,7 @@ import { activeTabRef } from '../components/inpage-navigation.component';
 const Home = () => {
   const [blogs, setBlogs] = useState(null);
   const [trendingBlogs, setTrendingBlogs] = useState(null);
-  const categories = ["programing","hollywood","film making","social media", "cooking","tech","finances","travel"];
+  const categories = ["programing","hollywood","film making","social media", "cooking","tech","finances","travel","book"];
   const [pageState, setPageState] = useState("home");
 
 
@@ -48,14 +48,30 @@ const Home = () => {
     else{
       setPageState(category);
     }
+  };
 
+  const fetchBlogsByCategory = () => {
+    axios
+      .post("/api/search-blogs", {
+        tag: pageState,
+      })
+      .then(({data}) => {
+        console.log(data.resultedBlogs);
+        setBlogs(data.resultedBlogs);
+      })
+      .catch((err) => {
+        confirm.log(err.massage);
+      });
   };
 
   useEffect(()=> {
     activeTabRef.current.click();
-    
+
     if(pageState == "home"){
       fetchLatestBlogs();
+    }
+    else{
+      fetchBlogsByCategory();
     }
     if(!trendingBlogs){
       fetchTrendingBlogs();
