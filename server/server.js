@@ -185,6 +185,26 @@ server.get('/api/trending-blogs', (req, res) => {
         })
 })
 
+server.post('/api/search-blogs', async (req, res) => {
+    let { tag } = req.body;
+    console.log(req.body);
+    let maxLimit = 5;
+    const findQuery = { tags: tag, draft: false };
+  
+    try {
+      const resultedBlogs = await blogs.find(findQuery)
+        .populate("author", "personal_info.fullname personal_info.profile_img personal_info.username -_id")
+        .sort({ "publishedAt": -1 })
+        .select("blog_id title des banner activity tags publishedAt -_id")
+        .limit(maxLimit)
+        .exec();
+  
+      return res.status(200).json({ resultedBlogs });
+    } catch (err) {
+      return res.status(500).json({ error: err.message });
+    }
+  });
+
 
 server.post('/api/create-blog', verifyJWT, (req, res) => {
     // console.log(req.body);
