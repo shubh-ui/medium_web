@@ -76,7 +76,7 @@ const Home = () => {
                     transition={{ duration: 1, delay: i * 0.1 }}
                     key={i}
                     >
-                      <MininamBlogPost blog={blog} author={blog.author} />
+                      <MininamBlogPost blog={blog} author={blog.author.personal_info} index={i} />
                     </AnimationWrapper>
                   )
                 })
