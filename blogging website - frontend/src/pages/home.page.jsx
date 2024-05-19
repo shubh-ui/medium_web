@@ -6,6 +6,7 @@ import Loader from '../components/loader.component';
 import BlogPostCard from '../components/blog-post.component';
 import MininamBlogPost from '../components/nobanner-blog-post.component';
 import { activeTabRef } from '../components/inpage-navigation.component';
+import NoDataComponent from '../components/nodata.component';
 
 
 const Home = () => {
@@ -13,10 +14,10 @@ const Home = () => {
   const [trendingBlogs, setTrendingBlogs] = useState(null);
   const categories = ["programing","hollywood","film making","social media", "cooking","tech","finances","travel","book"];
   const [pageState, setPageState] = useState("home");
+  const context = import.meta.env.VITE_SERVER_CONTEXT;
 
 
   const fetchLatestBlogs = () => {
-    const context = "/api";
     const urlCd = "/latest-blogs";
     axios
       .get(context + urlCd)
@@ -28,7 +29,6 @@ const Home = () => {
 
   
   const fetchTrendingBlogs = () => {
-    const context = "/api";
     const urlCd = "/trending-blogs";
     axios
       .get(context + urlCd)
@@ -92,6 +92,7 @@ const Home = () => {
               {blogs == null ? (
                 <Loader />
               ) : (
+                blogs.length ?
                 blogs.map((blog, i) => {
                   return (
                     <AnimationWrapper
@@ -104,7 +105,8 @@ const Home = () => {
                       />
                     </AnimationWrapper>
                   );
-                })
+                }) :
+                <NoDataComponent message="No blogs found for this category..." />
               )}
             </>
 
