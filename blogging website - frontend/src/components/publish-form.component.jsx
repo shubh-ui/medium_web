@@ -23,6 +23,7 @@ const PublishForm = () => {
     let { userAuth: { access_token } } = useContext(userContext);
     const characterLimit = 200;
     const tagLimit = 10;
+    const context = import.meta.env.VITE_SERVER_CONTEXT;
 
     const navigate = useNavigate();
 
@@ -65,7 +66,6 @@ const PublishForm = () => {
 
     const bublishBlog = (e) => {
 
-      const context = "/api";
       const urlCd = "/create-blog";
 
       if(e.target.className.includes("disable")){

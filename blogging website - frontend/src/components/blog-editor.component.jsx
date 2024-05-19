@@ -16,6 +16,7 @@ const BlogEditor = () => {
 
     let { blog, blog:{ title, banner, tags, des, content}, setBlog, textEditor, setTextEditor, editorState, setEditorState } = useContext(editorContext);
     let { userAuth:{ access_token} } = useContext(userContext);
+    const context = import.meta.env.VITE_SERVER_CONTEXT;
 
     useEffect(() => {
         console.log(content);
@@ -29,7 +30,6 @@ const BlogEditor = () => {
 
 
     // let blogBannerRef = useRef();
-    const context = "/api";
     
     const handleBannerUpload = async (e) => {
         const img = e.target.files[0];
@@ -106,7 +106,6 @@ const BlogEditor = () => {
     }
 
     const handleDraft = (e) => {
-      const context = "/api";
       const urlCd = "/create-blog";
 
       if(e.target.className.includes("disable")){
