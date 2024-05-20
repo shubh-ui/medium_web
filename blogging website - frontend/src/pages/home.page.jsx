@@ -7,6 +7,7 @@ import BlogPostCard from '../components/blog-post.component';
 import MininamBlogPost from '../components/nobanner-blog-post.component';
 import { activeTabRef } from '../components/inpage-navigation.component';
 import NoDataComponent from '../components/nodata.component';
+import { filterPaginationData } from '../common/filter-pagination-data';
 
 
 const Home = () => {
@@ -17,12 +18,20 @@ const Home = () => {
   const context = import.meta.env.VITE_SERVER_CONTEXT;
 
 
-  const fetchLatestBlogs = () => {
+  const fetchLatestBlogs = (page = 1) => {
     const urlCd = "/latest-blogs";
     axios
-      .get(context + urlCd)
-      .then(({ data }) => {
-        setBlogs(data.blogs);
+      .post(context + urlCd, { page })
+      .then(async ({ data }) => {
+        console.log(data);
+        const formatedData = await filterPaginationData({
+          state:blogs,
+          data:data.blogs,
+          page:page,
+          countRoute:"/all-latest-blog-count",
+        })
+        console.log(formatedData);
+        setBlogs(formatedData);
       })
       .catch((err) => console.error(err.massage));
   };
