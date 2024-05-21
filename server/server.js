@@ -217,6 +217,18 @@ server.post('/api/search-blogs', async (req, res) => {
     }
   });
 
+server.post('/api/search-blog-count', (req, res) => {
+    let { tag } = req.body;
+    const findQuery = { tags: tag, draft: false, };
+    blogs.countDocuments(findQuery)
+        .then((count) => {
+            return res.status(200).json({ totalDocs: count });
+        })
+        .catch(err => {
+            return res.status(500).json({ Error: err.massage });
+        })
+})
+
 
 server.post('/api/create-blog', verifyJWT, (req, res) => {
     // console.log(req.body);
