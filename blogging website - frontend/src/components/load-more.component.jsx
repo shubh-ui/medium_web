@@ -1,7 +1,7 @@
 import React from "react";
 
 const LoadMoreDataBtn = ({ state, fetchDataFun }) => {
-  if (state !== null && state.totalDocs > state.results.length) {
+  if (state !== null && state?.totalDocs > state?.results?.length) {
     console.warn("inside load btn");
     return (
       <button
