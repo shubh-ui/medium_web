@@ -128,7 +128,7 @@ const Home = () => {
                 }) :
                 <NoDataComponent message="No blogs found for this category..." />
               )}
-              <LoadMoreDataBtn state={blogs} fetchDataFun={fetchLatestBlogs} />
+              <LoadMoreDataBtn state={blogs} fetchDataFun={pageState == "home" ? fetchLatestBlogs : fetchBlogsByCategory} />
             </>
 
             <>
