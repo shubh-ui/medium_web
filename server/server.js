@@ -209,7 +209,7 @@ server.post('/api/search-blogs', async (req, res) => {
     else {
         findQuery = { draft: false, title: new RegExp(query, "i") }
     }
-    console.log(findQuery)
+    // console.log(findQuery)
     try {
       const resultedBlogs = await blogs.find(findQuery)
         .populate("author", "personal_info.fullname personal_info.profile_img personal_info.username -_id")
@@ -226,8 +226,15 @@ server.post('/api/search-blogs', async (req, res) => {
   });
 
 server.post('/api/search-blog-count', (req, res) => {
-    let { tag } = req.body;
-    const findQuery = { tags: tag, draft: false, };
+    let { tag ,query } = req.body;
+    let findQuery;
+
+    if (tag) {
+        findQuery = { tags: tag, draft: false };
+    }
+    else {
+        findQuery = { draft: false, title: new RegExp(query, "i") }
+    }
     blogs.countDocuments(findQuery)
         .then((count) => {
             return res.status(200).json({ totalDocs: count });
