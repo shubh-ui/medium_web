@@ -199,10 +199,17 @@ server.get('/api/trending-blogs', (req, res) => {
 })
 
 server.post('/api/search-blogs', async (req, res) => {
-    let { tag, page } = req.body;
+    let { tag, page, query } = req.body;
     let maxLimit = 5;
-    const findQuery = { tags: tag, draft: false };
-  
+    let findQuery;
+
+    if (tag) {
+        findQuery = { tags: tag, draft: false };
+    }
+    else {
+        findQuery = { draft: false, title: new RegExp(query, "i") }
+    }
+    console.log(findQuery)
     try {
       const resultedBlogs = await blogs.find(findQuery)
         .populate("author", "personal_info.fullname personal_info.profile_img personal_info.username -_id")
