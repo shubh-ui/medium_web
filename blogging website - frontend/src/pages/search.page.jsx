@@ -7,6 +7,7 @@ import BlogPostCard from "../components/blog-post.component";
 import NoDataComponent from "../components/nodata.component";
 import axios from "axios";
 import { filterPaginationData } from "../common/filter-pagination-data";
+import LoadMoreDataBtn from "../components/load-more.component";
 
 const SearchPage = () => {
   let { query } = useParams();
@@ -38,8 +39,13 @@ const SearchPage = () => {
   };
 
   useEffect(() => {
-    searchblogs({ page: 1 });
+    resetState()
+    searchblogs({ page: 1,create_new_obj:true });
   }, [query]);
+
+  const resetState = () => {
+    setBlogs(null);
+  }
 
   return (
     <>
@@ -69,7 +75,7 @@ const SearchPage = () => {
               ) : (
                 <NoDataComponent message="No blogs found for this category..." />
               )}
-              {/* <LoadMoreDataBtn state={blogs} fetchDataFun={pageState == "home" ? fetchLatestBlogs : fetchBlogsByCategory} /> */}
+              <LoadMoreDataBtn state={blogs} fetchDataFun={searchblogs} />
             </>
           </InpageNavigation>
         </div>
