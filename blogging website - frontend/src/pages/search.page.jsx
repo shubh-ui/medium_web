@@ -49,10 +49,20 @@ const SearchPage = () => {
 
   return (
     <>
+      <section>
+        {
+          <h1 className="max-h-[52px] tracking-[-0.011em] leading-[52px] text-[42px] font-medium mt-8">
+            <span className="opacity-60 max-h-[52px] tracking-[-0.011em] leading-[52px] text-[42px] font-medium">
+              Results for
+            </span>{" "}
+            {query}
+          </h1>
+        }
+      </section>
       <section className="flex items-center gap-10">
         <div className="w-full">
           <InpageNavigation
-            Routes={[`search result for "${query}"`, "account matched"]}
+            Routes={[`story`, "account matched"]}
             defaultHidden={["account matched"]}
           >
             <>
