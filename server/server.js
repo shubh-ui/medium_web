@@ -225,7 +225,7 @@ server.post('/api/search-blogs', async (req, res) => {
     }
   });
 
-  server.post('/api/search-user', (req, res) => {
+  server.post('/api/search-users', (req, res) => {
     let { query } = req.body;
     User.find({ "personal_info.username": new RegExp(query, "i") })
       .limit(50)
