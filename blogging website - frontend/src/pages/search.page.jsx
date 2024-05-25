@@ -8,6 +8,7 @@ import NoDataComponent from "../components/nodata.component";
 import axios from "axios";
 import { filterPaginationData } from "../common/filter-pagination-data";
 import LoadMoreDataBtn from "../components/load-more.component";
+import UserCard from "../components/usercard.component";
 
 const SearchPage = () => {
   let { query } = useParams();
@@ -61,6 +62,30 @@ const SearchPage = () => {
     setUsers(null);
   }
 
+  const UserscardWrapper = () => {
+    return (
+      <>
+        {users == null ? (
+          <Loader />
+        ) : users.length ? (
+          users.map((user, i) => {
+            return (
+              <AnimationWrapper
+                key={i}
+                transition={{ duration: 1, delay: i * 0.08 }}
+              >
+                <UserCard user={user}/>
+              </AnimationWrapper>
+            );
+          })
+        ) : (
+          <NoDataComponent message="No user found" />
+        )}
+      </>
+    );
+  };
+
+
   return (
     <>
       <section>
@@ -101,6 +126,7 @@ const SearchPage = () => {
               )}
               <LoadMoreDataBtn state={blogs} fetchDataFun={searchblogs} />
             </>
+            <UserscardWrapper />
           </InpageNavigation>
         </div>
       </section>
