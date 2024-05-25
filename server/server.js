@@ -225,6 +225,19 @@ server.post('/api/search-blogs', async (req, res) => {
     }
   });
 
+  server.post('/api/search-user', (req, res) => {
+    let { query } = req.body;
+    User.find({ "personal_info.username": new RegExp(query, "i") })
+      .limit(50)
+      .select({ personal_info: { username: 1, fullname: 1, profile_img: 1 } })
+      .then(users => {
+        return res.status(200).json(users);
+      })
+      .catch(err => {
+        return res.status(500).json({ error: err.message });
+      });
+  });
+
 server.post('/api/search-blog-count', (req, res) => {
     let { tag ,query } = req.body;
     let findQuery;
