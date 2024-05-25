@@ -13,6 +13,9 @@ const SearchPage = () => {
   let { query } = useParams();
   const [blogs, setBlogs] = useState(null);
 
+  const [users, setUsers] = useState(null);
+  
+
   const searchblogs = ({ page = 1, create_new_obj = false }) => {
     axios
       .post(import.meta.env.VITE_SERVER_CONTEXT + "/search-blogs", {
@@ -38,13 +41,24 @@ const SearchPage = () => {
       });
   };
 
+  const fetchUsers = () => {
+    axios.post(import.meta.env.VITE_SERVER_CONTEXT + '/search-users', {query})
+    .then(({data}) => {
+      if(data){
+        setUsers(data);
+      }
+    })
+  }
+
   useEffect(() => {
     resetState()
     searchblogs({ page: 1,create_new_obj:true });
+    fetchUsers();
   }, [query]);
 
   const resetState = () => {
     setBlogs(null);
+    setUsers(null);
   }
 
   return (
