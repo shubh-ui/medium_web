@@ -98,7 +98,7 @@ const SearchPage = () => {
           </h1>
         }
       </section>
-      <section className="flex items-center gap-10">
+      <section className="flex gap-10">
         <div className="w-full">
           <InpageNavigation
             Routes={[`story`, "account matched"]}
@@ -128,6 +128,11 @@ const SearchPage = () => {
             </>
             <UserscardWrapper />
           </InpageNavigation>
+        </div>
+
+        <div className="min-w-[40%] lg:min-w-[350px] max-w-min border-grey pl-8 pt-3 max-md:hidden">
+              <h1 className="font-medium text-xl mb-8">User Releted to search <i className="fi fi-rr-user mt-1"></i></h1>
+              <UserscardWrapper />
         </div>
       </section>
     </>
