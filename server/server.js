@@ -238,6 +238,20 @@ server.post('/api/search-blogs', async (req, res) => {
       });
   });
 
+server.post('/api/get-profile', (req, res) => {
+    let { username } = req.body;
+    console.log(req.body)
+
+    User.findOne({ "personal_info.username": username })
+        .select("-personal_info.password -google_auth -blogs")
+        .then(user => {
+            return res.status(200).json({ user })
+        })
+        .catch(err => {
+            return res.status(500).json({ Error: err.message })
+        })
+})
+
 server.post('/api/search-blog-count', (req, res) => {
     let { tag ,query } = req.body;
     let findQuery;
