@@ -245,7 +245,7 @@ server.post('/api/get-profile', (req, res) => {
     User.findOne({ "personal_info.username": username })
         .select("-personal_info.password -google_auth -blogs")
         .then(user => {
-            return res.status(200).json({ user })
+            return res.status(200).json( user )
         })
         .catch(err => {
             return res.status(500).json({ Error: err.message })
