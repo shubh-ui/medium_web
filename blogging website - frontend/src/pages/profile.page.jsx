@@ -5,6 +5,11 @@ import Loader from "../components/loader.component";
 import { userContext } from "../App";
 import AboutUser from "../components/about.component";
 import { filterPaginationData } from "../common/filter-pagination-data";
+import NoDataComponent from "../components/nodata.component";
+import AnimationWrapper from "../common/page-animation";
+import BlogPostCard from "../components/blog-post.component";
+import LoadMoreDataBtn from "../components/load-more.component";
+import InpageNavigation from "../components/inpage-navigation.component";
 
 export const profileDataStructure = {
   personal_info: {
@@ -44,10 +49,10 @@ const ProfilePage = () => {
       .post(import.meta.env.VITE_SERVER_CONTEXT + context, {
         username: profileId,
       })
-      .then(({ data }) => {
-        console.log(data);
-        setProfile(data);
-        getBlogs({user_id:profileId})
+      .then(({ data:user }) => {
+        console.log(user);
+        setProfile(user);
+        getBlogs({user_id:user._id})
         setLoading(false);
       })
       .catch((err) => {
@@ -60,7 +65,7 @@ const ProfilePage = () => {
     user_id = user_id == undefined ? blogs.user_id : user_id;
 
     axios.post(import.meta.env.VITE_SERVER_CONTEXT + '/search-blogs',{
-      autor:user_id,
+      author:user_id,
       page
     }).then(async ({data}) => {
 
@@ -123,6 +128,39 @@ const ProfilePage = () => {
             </div>
             <AboutUser className="max-md:hidden" bio={bio} social_links={social_links} joinedAt={joinedAt} />
 
+          </div>
+          <div className="max-md:mt-12 w-full">
+          <InpageNavigation
+            Routes={["Blogs Published", "About"]}
+            defaultHidden={["About"]}
+          >
+            <>
+              {blogs == null ? (
+                <Loader />
+              ) : (
+                blogs.results.length ?
+                blogs.results.map((blog, i) => {
+                  return (
+                    <AnimationWrapper
+                      transition={{ duration: 1, delay: i * 0.1 }}
+                      key={i}
+                    >
+                      <BlogPostCard
+                        content={blog}
+                        author={blog.author.personal_info}
+                      />
+                    </AnimationWrapper>
+                  );
+                }) :
+                <NoDataComponent message="No blogs found for this category..." />
+              )}
+              <LoadMoreDataBtn state={blogs} fetchDataFun={getBlogs} />
+            </>
+
+           <>
+              <AboutUser bio={bio} social_links={social_links} joinedAt={joinedAt} />
+           </>
+          </InpageNavigation>
           </div>
         </section>
       )}
