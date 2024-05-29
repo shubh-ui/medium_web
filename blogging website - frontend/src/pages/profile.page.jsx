@@ -4,6 +4,7 @@ import axios from "axios";
 import Loader from "../components/loader.component";
 import { userContext } from "../App";
 import AboutUser from "../components/about.component";
+import { filterPaginationData } from "../common/filter-pagination-data";
 
 export const profileDataStructure = {
   personal_info: {
@@ -24,6 +25,8 @@ const ProfilePage = () => {
   let { id: profileId } = useParams();
   const [profile, setProfile] = useState(profileDataStructure);
   const [loading, setLoading] = useState(true);
+  const [blogs, setBlogs] = useState(null);
+
   let {
     userAuth: { username },
   } = useContext(userContext);
@@ -44,6 +47,7 @@ const ProfilePage = () => {
       .then(({ data }) => {
         console.log(data);
         setProfile(data);
+        getBlogs({user_id:profileId})
         setLoading(false);
       })
       .catch((err) => {
@@ -51,6 +55,29 @@ const ProfilePage = () => {
         setLoading(false);
       });
   };
+
+  const getBlogs = ({page = 1, user_id}) => {
+    user_id = user_id == undefined ? blogs.user_id : user_id;
+
+    axios.post(import.meta.env.VITE_SERVER_CONTEXT + '/search-blogs',{
+      autor:user_id,
+      page
+    }).then(async ({data}) => {
+
+      let formatedData = await filterPaginationData({
+        data:data.resultedBlogs,
+        state: blogs,
+        page,
+        countRoute:'/search-blog-count',
+        data_to_send:{autor:user_id}
+      })
+
+      formatedData.user_id = user_id;
+
+      console.log("Formated Data from Profile page:",formatedData);
+      setBlogs(formatedData);
+    })
+  }
 
   useEffect(() => {
     resetState();
