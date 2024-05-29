@@ -3,6 +3,7 @@ import { Link, useParams } from "react-router-dom";
 import axios from "axios";
 import Loader from "../components/loader.component";
 import { userContext } from "../App";
+import AboutUser from "../components/about.component";
 
 export const profileDataStructure = {
   personal_info: {
@@ -30,6 +31,7 @@ const ProfilePage = () => {
   let {
     personal_info: { fullname, username: profileName, profile_img, bio },
     account_info: { total_posts, total_reads },
+    social_links,
     joinedAt,
   } = profile;
 
@@ -90,7 +92,10 @@ const ProfilePage = () => {
               ) : (
                 ""
               )}
+
             </div>
+            <AboutUser className="max-md:hidden" bio={bio} social_links={social_links} joinedAt={joinedAt} />
+
           </div>
         </section>
       )}
