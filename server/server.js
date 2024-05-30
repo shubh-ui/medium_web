@@ -113,7 +113,7 @@ server.post("/api/signin", (req, res) => {
 
         // console.log(user)
         if (!user) {
-            return res.status(403).json({ "Error": "Email not found" })
+            return res.status(403).json({ "Error": "Email not found" });
         }
 
         bcrypt.compare(password, user.personal_info.password, (err, result) => {
@@ -155,15 +155,15 @@ server.post('/api/upload', upload.single('image'), (req, res) => {
 });
 
 server.post('/api/latest-blogs', (req, res) => {
-    let maxLImit = 5;
+    let maxLimit = 5;
     let { page } = req.body;
 
     blogs.find({ draft: false })
         .populate("author", "personal_info.fullname personal_info.profile_img personal_info.username -_id")
         .sort({ "publishedAt": -1 })
         .select("blog_id title des banner activity tags publishedAt -_id")
-        .skip((page - 1) * maxLImit)
-        .limit(maxLImit)
+        .skip((page - 1) * maxLimit)
+        .limit(maxLimit)
         .then(blogs => {
             return res.status(200).json({ blogs });
         }).catch(err => {
@@ -199,12 +199,14 @@ server.get('/api/trending-blogs', (req, res) => {
 })
 
 server.post('/api/search-blogs', async (req, res) => {
-    let { tag, page, query } = req.body;
+    let { tag, page, author, query } = req.body;
     let maxLimit = 5;
     let findQuery;
-
     if (tag) {
         findQuery = { tags: tag, draft: false };
+    } 
+    else if(author){
+        findQuery = { author: author, draft: false };
     }
     else {
         findQuery = { draft: false, title: new RegExp(query, "i") }
@@ -240,7 +242,7 @@ server.post('/api/search-blogs', async (req, res) => {
 
 server.post('/api/get-profile', (req, res) => {
     let { username } = req.body;
-    console.log(req.body)
+    // console.log(req.body)
 
     User.findOne({ "personal_info.username": username })
         .select("-personal_info.password -google_auth -blogs")
@@ -253,11 +255,14 @@ server.post('/api/get-profile', (req, res) => {
 })
 
 server.post('/api/search-blog-count', (req, res) => {
-    let { tag ,query } = req.body;
+    let { tag ,query, author } = req.body;
     let findQuery;
 
     if (tag) {
         findQuery = { tags: tag, draft: false };
+    }
+    else if (author) {
+        findQuery = { author: author, draft: false };
     }
     else {
         findQuery = { draft: false, title: new RegExp(query, "i") }
