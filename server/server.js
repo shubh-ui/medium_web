@@ -347,6 +347,22 @@ server.post('/api/create-blog', verifyJWT, (req, res) => {
 
 })
 
+server.post('/api/get-blog', (req, res) => {
+    let { blogId } = req.body;
+
+    let incrementVal = 1;
+
+    blogs.findOneAndUpdate({ blog_id: blogId }, { $inc: { "activity.total_reads": incrementVal } })
+        .populate("author", "personal_info.username personal_info.fullname personal_info.profile_img")
+        .select("title des banner content tags activity publishedAt blog_id")
+        .then(blog => {
+            return res.status(200).json(blog);
+        })
+        .catch(err => {
+            return res.status(500).json({ Error: err.message });
+        })
+})
+
 server.listen(PORT, () => {
     console.log("listning on Port: ", PORT);
 })
