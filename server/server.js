@@ -356,7 +356,11 @@ server.post('/api/get-blog', (req, res) => {
         .populate("author", "personal_info.username personal_info.fullname personal_info.profile_img")
         .select("title des banner content tags activity publishedAt blog_id")
         .then(blog => {
-            return res.status(200).json(blog);
+            User.findOneAndUpdate({ "personal_info.username": blog.author.personal_info.username }, { $inc: { "account_info.total_reads": incrementVal } })
+                .catch(err => {
+                    return res.status(500).json({ Eoor: err.message });
+                })
+            return res.status(200).json({ blog });
         })
         .catch(err => {
             return res.status(500).json({ Error: err.message });
