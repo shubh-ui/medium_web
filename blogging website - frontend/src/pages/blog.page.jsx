@@ -1,28 +1,50 @@
 import axios from "axios";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom"
 
-const BlogPage = () =>  {
+export const blogStructure = {
+  title: "",
+  content: "",
+  banner: "",
+  tags: [],
+  publishedAt: "",
+  des: "",
+  author: { personal_info: { username: "", fullname: "", profile_img: "" } },
+};
 
-    let { blogId } = useParams();
+const BlogPage = () => {
+  let { blogId } = useParams();
+  const [blog, setBlog] = useState(blogStructure);
 
-    const fetchBlog = () => {
-      const context = "/get-blog";
-      axios
-        .post(import.meta.env.VITE_SERVER_CONTEXT + context, { blogId })
-        .then((data) => {
-          console.log(data);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    };
-    useEffect(() => {
-        fetchBlog();
-    }, []);
-    return (
-        <>This is a blog page- {blogId}</>
-    )
-}
+  let {
+    title,
+    content,
+    banner,
+    tags,
+    publishedAt,
+    blog_id,
+    des,
+    author: {
+      personal_info: { username, fullname, profile_img },
+    },
+  } = blog;
+
+  const fetchBlog = () => {
+    const context = "/get-blog";
+    axios
+      .post(import.meta.env.VITE_SERVER_CONTEXT + context, { blogId })
+      .then(({ data: { blog } }) => {
+        console.log(blog);
+        setBlog(blog);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+  useEffect(() => {
+    fetchBlog();
+  }, []);
+  return <>This is a blog page- {blogId}</>;
+};
 
 export default BlogPage
