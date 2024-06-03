@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom"
 import AnimationWrapper from "../common/page-animation";
 import Loader from "../components/loader.component";
+import { getDay } from "../common/date";
 
 export const blogStructure = {
   title: "",
@@ -72,6 +73,7 @@ const BlogPage = () => {
                     </div>
                     </div>
                 </div>
+                <p className="text-dark-grey opacity-75 max-sm:mt-6 max-sm:ml-12 max-sm:pl-5">Published On {getDay(publishedAt)}</p>
 
               </div>
           </div>
