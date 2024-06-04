@@ -199,11 +199,11 @@ server.get('/api/trending-blogs', (req, res) => {
 })
 
 server.post('/api/search-blogs', async (req, res) => {
-    let { tag, page, author, query } = req.body;
-    let maxLimit = 5;
+    let { tag, page, author, query, limit, eliminate_blog } = req.body;
+    let maxLimit = limit ? limit : 5;
     let findQuery;
     if (tag) {
-        findQuery = { tags: tag, draft: false };
+        findQuery = { tags: tag, draft: false, blog_id: {$ne: eliminate_blog} };
     } 
     else if(author){
         findQuery = { author: author, draft: false };
