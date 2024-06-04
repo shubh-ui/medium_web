@@ -10,7 +10,6 @@ export const blogStructure = {
   title: "",
   content: "",
   banner: "",
-  tags: [],
   publishedAt: "",
   des: "",
   author: { personal_info: { username: "", fullname: "", profile_img: "" } },
@@ -21,12 +20,12 @@ const BlogPage = () => {
   let { blogId } = useParams();
   const [ blog, setBlog ] = useState(blogStructure);
   const [ loading, setLoading ] = useState(true);
+  const [ similarBlogs, setSimilarBlogs ] = useState(null);
 
   let {
     title,
     content,
     banner,
-    tags,
     publishedAt,
     blog_id,
     des,
@@ -43,6 +42,17 @@ const BlogPage = () => {
         console.log(blog);
         setBlog(blog);
         setLoading(false);
+        axios.post(import.meta.env.VITE_SERVER_CONTEXT + '/search-blogs',{
+          tag:blog.tags[0],
+          limit:6,
+          eliminate_blog:blog.blog_id
+        })
+        .then(({data}) => {
+          setSimilarBlogs(data.resultedBlogs);
+        })
+        .catch(err => {
+          console.log(err.message);
+        })
       })
       .catch((err) => {
         console.log(err);
@@ -59,7 +69,7 @@ const BlogPage = () => {
         <Loader />
       ) : (
         <section>
-          <div className="max-w[900px] center py-10 max-lg:px-[5vw]">
+          <div className="max-w[800px] center py-10 max-lg:px-[5vw]">
             <img src={banner} alt="blog_img" className="aspect-video" />
             <blogContext.Provider value={{ blog, setBlog}}>
               <div className="mt-12">
@@ -90,6 +100,9 @@ const BlogPage = () => {
                 </div>
               </div>
               <BlogInteraction />
+
+              <BlogInteraction />
+
 
             </blogContext.Provider>
           </div>
