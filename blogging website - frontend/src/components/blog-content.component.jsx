@@ -19,6 +19,22 @@ const Quote = ({ quote, caption}) => {
     )
 }
 
+const List = ({ style, items }) => {
+  return (
+    <ol className={`pl-5 ${style == "ordered" ? "list-decimal" : "list-disc"}`}>
+      {items.map((listitem, i) => {
+        return (
+          <li
+            key={i}
+            className="my-4"
+            dangerouslySetInnerHTML={{ __html: listitem }}
+          ></li>
+        );
+      })}
+    </ol>
+  );
+};
+
 const BlogContent = ({block}) => {
 
     let { type , data } = block;
@@ -40,6 +56,10 @@ const BlogContent = ({block}) => {
 
     if(type == "quote"){
         return <Quote quote={data.quote} caption={data.caption} />
+    }
+
+    if(type == "list") {
+        return <List style={data.style} items={data.items} />
     }
 
     else{
