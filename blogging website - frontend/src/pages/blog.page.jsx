@@ -80,8 +80,8 @@ const BlogPage = () => {
       {loading ? (
         <Loader />
       ) : (
-        <section>
-          <div className="max-w[800px] center py-10 max-lg:px-[5vw]">
+        // <section>
+          <div className="max-w-[1100px] center py-10 max-lg:px-[5vw]">
             <img src={banner} alt="blog_img" className="aspect-video" />
             <blogContext.Provider value={{ blog, setBlog }}>
               <div className="mt-12">
@@ -154,7 +154,7 @@ const BlogPage = () => {
               )}
             </blogContext.Provider>
           </div>
-        </section>
+        // </section>
       )}
     </AnimationWrapper>
   );
