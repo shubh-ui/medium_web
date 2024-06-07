@@ -14,18 +14,20 @@ const UserAuthForm = ({ type }) => {
   console.log("userauth-",access_token);
 
   const userAuthToServer = (serverRout, formData) => {
-    const contex = "/api"
-    axios.post( contex + serverRout, formData).then(({data}) => {
-      console.log(data);
-      setUserAuth(data)
-      toast.success("Login Successfully");
-      storeInSession("user",JSON.stringify(data));
-    })
-    .catch(({response}) => {
-      toast.error(response.data.Error);
-      console.log(response)
-    })
-  }
+    const contex = "/api";
+    axios
+      .post(contex + serverRout, formData)
+      .then(({ data }) => {
+        console.log(data);
+        setUserAuth(data);
+        toast.success("Login Successfully");
+        storeInSession("user", JSON.stringify(data));
+      })
+      .catch(({ response }) => {
+        toast.error(response.data.Error);
+        console.log(response);
+      });
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
