@@ -5,7 +5,7 @@ import { editorContext } from "../pages/editor.pages";
 import Tags from "./tags.component";
 import axios from "axios";
 import { userContext } from "../App";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const PublishForm = () => {
 
@@ -18,6 +18,8 @@ const PublishForm = () => {
       editorState,
       setEditorState,
     } = useContext(editorContext);
+    let { blog_id } = useParams();
+
     let {} = useContext(editorContext);
     const [userAuth, setUserAuth] = useState({});
     let { userAuth: { access_token } } = useContext(userContext);
@@ -91,7 +93,7 @@ const PublishForm = () => {
       }
 
       axios
-        .post(context + urlCd, blogObj, {
+        .post(context + urlCd, {...blogObj, id: blog_id}, {
           headers: {
             Authorization: `bearer ${access_token}`,
           },
