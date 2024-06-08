@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom"
+import { Link, useParams } from "react-router-dom"
 import Logo  from "../imgs/logo.png"
 import AnimationWrapper from "../common/page-animation";
 import BlogBanner from "../imgs/blog banner.png"
@@ -17,12 +17,14 @@ const BlogEditor = () => {
     let { blog, blog:{ title, banner, tags, des, content}, setBlog, textEditor, setTextEditor, editorState, setEditorState } = useContext(editorContext);
     let { userAuth:{ access_token} } = useContext(userContext);
     const context = import.meta.env.VITE_SERVER_CONTEXT;
+    let { blog_id } = useParams();
+    console.log("Blog_id",blog_id);
 
     useEffect(() => {
         console.log(content);
         setTextEditor(new EditorJs({
             holder:text_Editor,
-            data:content,
+            data:Array.isArray(content) ? content[0] : content,
             tools:tools,
             placeholder:'Lets write an awesome story..'
         }))
@@ -125,7 +127,7 @@ const BlogEditor = () => {
       }
 
       axios
-        .post(context + urlCd, blogObj, {
+        .post(context + urlCd, {...blogObj, id:blog_id}, {
           headers: {
             Authorization: access_token,
           },
