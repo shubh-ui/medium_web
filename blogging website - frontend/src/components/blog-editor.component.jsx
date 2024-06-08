@@ -123,13 +123,13 @@ const BlogEditor = () => {
       e.target.classList.add("disable");
 
       let blogObj = {
-        title, des, banner, tags, content, draft:true
+        title, des, banner, tags, content:Array.isArray(content) ? content[0] : content, draft:true
       }
 
       axios
         .post(context + urlCd, {...blogObj, id:blog_id}, {
           headers: {
-            Authorization: access_token,
+            Authorization: `bearer ${access_token}`,
           },
         })
         .then(() => {
