@@ -5,6 +5,7 @@ import BlogEditor from "../components/blog-editor.component";
 import { createContext } from "react";
 import PublishForm from "../components/publish-form.component";
 import Loader from "../components/loader.component";
+import axios from "axios";
 
 const blogStructure = {
     title:'',
@@ -35,7 +36,25 @@ const Editor = () => {
             setLoading(false);
             return
         }
-    },[])
+        fetchBLogForEdit();
+    },[blog_id])
+
+    const fetchBLogForEdit = () => {
+        const endPointUrl ="/get-blog"
+        axios.post(import.meta.env.VITE_SERVER_CONTEXT + endPointUrl,{
+            blog_id,
+            draft:true,
+            mode:"edit"
+        })
+        .then(({data : { blog }}) => {
+            setBlog(blog);
+            setLoading(false);
+        })
+        .catch(err => {
+            console.log(err.message);
+            setLoading(false);
+        })
+    }
 
     return (
         <editorContext.Provider value={{ blog, setBlog, editorState, setEditorState, textEditor, setTextEditor }}>
