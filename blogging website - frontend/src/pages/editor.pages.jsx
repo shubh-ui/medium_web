@@ -42,7 +42,7 @@ const Editor = () => {
     const fetchBLogForEdit = () => {
         const endPointUrl ="/get-blog"
         axios.post(import.meta.env.VITE_SERVER_CONTEXT + endPointUrl,{
-            blog_id,
+            blogId : blog_id,
             draft:true,
             mode:"edit"
         })
