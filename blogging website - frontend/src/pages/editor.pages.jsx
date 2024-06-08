@@ -1,9 +1,10 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { userContext } from "../App";
 import { Navigate, useParams } from "react-router-dom";
 import BlogEditor from "../components/blog-editor.component";
 import { createContext } from "react";
 import PublishForm from "../components/publish-form.component";
+import Loader from "../components/loader.component";
 
 const blogStructure = {
     title:'',
@@ -24,14 +25,22 @@ const Editor = () => {
     const [editorState, setEditorState] = useState("editor");
     const [blog, setBlog] = useState(blogStructure);
     const [textEditor, setTextEditor] = useState({ isReady: false});
+    const [loading, setLoading] = useState(true);
 
 
     let { userAuth: { access_token} } = useContext(userContext);
 
+    useEffect(() => {
+        if(!blog_id) {
+            setLoading(false);
+            return
+        }
+    },[])
+
     return (
         <editorContext.Provider value={{ blog, setBlog, editorState, setEditorState, textEditor, setTextEditor }}>
             {
-                access_token === null ? <Navigate to="/signin" /> : editorState === "editor" ? <BlogEditor /> : <PublishForm />
+                access_token === null ? <Navigate to="/signin" /> : loading ? <Loader /> : editorState === "editor" ? <BlogEditor /> : <PublishForm />
             }
         </editorContext.Provider>
     )
