@@ -284,23 +284,23 @@ server.post('/api/create-blog', verifyJWT, (req, res) => {
 
     let { title, des, tags, banner, content, draft, id } = req.body;
 
-    if (title == undefined || !title.length) {
+    if (title == undefined || !title?.length) {
         return res.status(404).json({ error: "You must provide a blog title to publish blog." })
     }
 
-    if (des == undefined || !des.length) {
+    if (des == undefined || !des?.length) {
         return res.status(404).json({ error: "You must provide a blog des to publish blog." })
     }
 
-    if (tags == undefined || !tags.length) {
+    if (tags == undefined || !tags?.length) {
         return res.status(404).json({ error: "You must provide a blog tags to publish blog." })
     }
 
-    if (banner == undefined || !banner.length) {
+    if (banner == undefined || !banner?.length) {
         return res.status(404).json({ error: "You must provide a blog banner to publish blog." })
     }
 
-    if (content == undefined || !content.blocks.length) {
+    if (content == undefined || !content?.blocks?.length) {
         return res.status(404).json({ error: "You must provide a blog content to publish blog." })
     }
 
