@@ -16,7 +16,7 @@ const BlogInteraction = () => {
     title
     },
     isLikedByUser,
-    setIsLikedByUser
+    setLikedByUser
   } = useContext(blogContext);
 
   let {userAuth: {username, access_token}} = useContext(userContext);

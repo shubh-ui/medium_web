@@ -23,7 +23,7 @@ const BlogPage = () => {
   const [ blog, setBlog ] = useState(blogStructure);
   const [ loading, setLoading ] = useState(true);
   const [ similarBlogs, setSimilarBlogs ] = useState(null);
-  const [ isLikedByUser, setIsLikedByUser ] = useState(false);
+  const [ isLikedByUser, setLikedByUser ] = useState(false);
 
   let {
     title,
@@ -84,7 +84,7 @@ const BlogPage = () => {
         // <section>
           <div className="max-w-[1100px] center py-10 max-lg:px-[5vw]">
             <img src={banner} alt="blog_img" className="aspect-video" />
-            <blogContext.Provider value={{ blog, setBlog , isLikedByUser, setIsLikedByUser}}>
+            <blogContext.Provider value={{ blog, setBlog , isLikedByUser, setLikedByUser}}>
               <div className="mt-12">
                 <h2>{title}</h2>
                 <div className="flex max-sm:flex-col justify-between my-8">
