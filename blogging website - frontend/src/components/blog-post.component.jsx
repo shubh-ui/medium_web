@@ -13,13 +13,15 @@ const BlogPostCard = ({content, author}) => {
     activity: { total_likes },
     blog_id: id,
   } = content;
-
+  
   let { fullname, profile_img, username } = author;
 
   return (
     <Link to={`/blog/${id}`} className="flex gap-8 mb-4 pb-5 border-b border-grey items-center">
       <div className="w-full">
+      <Link to={`/user/${username}`}>
         <div className="flex items-center gap-2 mb-7">
+
           <img
             src={profile_img}
             alt="profile_pic"
@@ -28,8 +30,11 @@ const BlogPostCard = ({content, author}) => {
           <p className="line-clamp-1">
             {fullname} @{username}
           </p>
+      
           <p className="min-w-fit">{getDay(publishedAt)}</p>
         </div>
+        </Link>
+
         <h1 className="blog-title font-semibold text-[22px]">{title}</h1>
         <p className="my-3 text-xl font-gelasio leading-7 max-sm:hidden md:max-[1100px] line-clamp-2">
           {des}
