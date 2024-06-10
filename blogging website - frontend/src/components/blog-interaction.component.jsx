@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 import { blogContext } from "../pages/blog.page";
 import { Link } from "react-router-dom";
 import { userContext } from "../App";
+import { Toaster, toast } from "react-hot-toast";
 
 const BlogInteraction = () => {
   let {
@@ -13,17 +14,33 @@ const BlogInteraction = () => {
         : { username: author_username },
     },
     title
-    }
+    },
+    isLikedByUser,
+    setIsLikedByUser
   } = useContext(blogContext);
 
-  let {userAuth: {username}} = useContext(userContext);
+  let {userAuth: {username, access_token}} = useContext(userContext);
+
+  const handleLikeBlog = () => {
+    if(access_token){
+
+    }
+    else{
+      toast.error("Please login to like this blog.")
+    }
+  }
+
+
   return (
     <>
+     <Toaster />
      <hr className="border-grey my-2" />
      <div className="flex gap-6 justify-between">
         <div className="flex gap-3 items-center">
 
-            <button className="w-10 h-10 rounded-full flex items-center justify-center bg-grey/80">
+            <button className="w-10 h-10 rounded-full flex items-center justify-center bg-grey/80"
+              onClick={handleLikeBlog}
+            >
             <i className="fi fi-rr-heart"></i>
             </button>
             <p className="text-xl text-dark-grey">{total_likes}</p>
