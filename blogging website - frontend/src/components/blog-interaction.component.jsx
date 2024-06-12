@@ -9,21 +9,27 @@ const BlogInteraction = () => {
     blog: {
       blog_id,
       activity: { total_likes, total_comments },
+      activity,
       author: {
         personal_info
         : { username: author_username },
     },
     title
     },
+    blog,
     isLikedByUser,
-    setLikedByUser
+    setLikedByUser,
+    setBlog
   } = useContext(blogContext);
 
   let {userAuth: {username, access_token}} = useContext(userContext);
 
   const handleLikeBlog = () => {
     if(access_token){
+      setLikedByUser(preVal => !preVal);
+      !isLikedByUser ? total_likes++ : total_likes--;
 
+      setBlog({...blog, activity:{...activity, total_likes}});
     }
     else{
       toast.error("Please login to like this blog.")
@@ -38,10 +44,10 @@ const BlogInteraction = () => {
      <div className="flex gap-6 justify-between">
         <div className="flex gap-3 items-center">
 
-            <button className="w-10 h-10 rounded-full flex items-center justify-center bg-grey/80"
+            <button className={"w-10 h-10 rounded-full flex items-center justify-center " + (isLikedByUser ? "bg-red/20 text-red" : "bg-grey/80")}
               onClick={handleLikeBlog}
             >
-            <i className="fi fi-rr-heart"></i>
+            <i className={"fi " + ( isLikedByUser ? "fi-sr-heart" : "fi-rr-heart" )}></i>
             </button>
             <p className="text-xl text-dark-grey">{total_likes}</p>
 
