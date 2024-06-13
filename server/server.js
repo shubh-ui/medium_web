@@ -410,6 +410,20 @@ server.post('/api/like-blog', verifyJWT, (req, res) => {
     })
 })
 
+server.post('/api/isLiked-by-user', verifyJWT, (req, res) => {
+    let user_id = req.user;
+
+    let { _id } = req.body;
+
+    Notification.exists({ user: user_id , type: "like", blog: _id})
+    .then((result) => {
+        return res.status(200).json(result);
+    })
+    .catch(err => {
+        return res.status(500).json({Error: err.message});
+    })
+})
+
 server.listen(PORT, () => {
     console.log("listning on Port: ", PORT);
 })
