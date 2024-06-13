@@ -3,10 +3,12 @@ import { blogContext } from "../pages/blog.page";
 import { Link } from "react-router-dom";
 import { userContext } from "../App";
 import { Toaster, toast } from "react-hot-toast";
+import axios from "axios";
 
 const BlogInteraction = () => {
   let {
     blog: {
+      _id,
       blog_id,
       activity: { total_likes, total_comments },
       activity,
@@ -25,11 +27,21 @@ const BlogInteraction = () => {
   let {userAuth: {username, access_token}} = useContext(userContext);
 
   const handleLikeBlog = () => {
+    let context = "like-blog"
     if(access_token){
       setLikedByUser(preVal => !preVal);
       !isLikedByUser ? total_likes++ : total_likes--;
 
       setBlog({...blog, activity:{...activity, total_likes}});
+
+      axios.post(import.meta.env.VITE_SERVER_CONTEXT + context, {
+        _id,
+        isLikedByUser
+      }, {
+        headers:{
+          Authorization: `bearer ${access_token}`
+        }
+      })
     }
     else{
       toast.error("Please login to like this blog.")
