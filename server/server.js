@@ -12,6 +12,7 @@ import blogs from "./Schema/Blog.js"
 import { v2 as cloudinaryV2 } from 'cloudinary';
 
 import User from "./Schema/User.js";
+import Notification from "./Schema/Notification.js";
 
 const server = express();
 
@@ -379,6 +380,34 @@ server.post('/api/get-blog', (req, res) => {
         .catch(err => {
             return res.status(500).json({ Error: err.message });
         })
+})
+
+server.post('like-blog', verifyJWT, (req, res) => {
+    let user_id = req.user;
+
+    let { _id, isLikedByUser } = req.body;
+
+    let incrementVal = !isLikedByUser ? 1 : -1;
+
+    blog.findOneAndUpdate({_id }, {$inc : { "activity.total_likes" : incrementVal}})
+    .then(blog => {
+
+        if(!isLikedByUser) {
+            let like = new Notification({
+                type:like,
+                blog:_id,
+                Notification: blog.author,
+                user:user.id
+            })
+            
+            like.save().then(notification => {
+                return res.status(200).json({Like_by_user: true});
+            })
+            .catch(err => {
+                return res.status(500).json({Error: err.message});
+            })
+        }
+    })
 })
 
 server.listen(PORT, () => {
