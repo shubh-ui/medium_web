@@ -382,22 +382,22 @@ server.post('/api/get-blog', (req, res) => {
         })
 })
 
-server.post('like-blog', verifyJWT, (req, res) => {
+server.post('/api/like-blog', verifyJWT, (req, res) => {
     let user_id = req.user;
 
     let { _id, isLikedByUser } = req.body;
 
     let incrementVal = !isLikedByUser ? 1 : -1;
 
-    blog.findOneAndUpdate({_id }, {$inc : { "activity.total_likes" : incrementVal}})
+    blogs.findOneAndUpdate({_id }, {$inc : { "activity.total_likes" : incrementVal}})
     .then(blog => {
 
         if(!isLikedByUser) {
             let like = new Notification({
-                type:like,
-                blog:_id,
-                Notification: blog.author,
-                user:user.id
+                type: "like",
+                blog: _id,
+                notification_for: blog.author,
+                user: user_id
             })
             
             like.save().then(notification => {

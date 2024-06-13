@@ -27,7 +27,7 @@ const BlogInteraction = () => {
   let {userAuth: {username, access_token}} = useContext(userContext);
 
   const handleLikeBlog = () => {
-    let context = "like-blog"
+    let context = "/like-blog"
     if(access_token){
       setLikedByUser(preVal => !preVal);
       !isLikedByUser ? total_likes++ : total_likes--;
@@ -41,6 +41,12 @@ const BlogInteraction = () => {
         headers:{
           Authorization: `bearer ${access_token}`
         }
+      })
+      .then(({data}) => {
+        console.log(data);
+      })
+      .catch(err => {
+        console.log(err);
       })
     }
     else{
