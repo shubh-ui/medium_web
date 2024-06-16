@@ -17,7 +17,7 @@ const BlogPostCard = ({content, author}) => {
   let { fullname, profile_img, username } = author;
 
   return (
-    <Link to={`/blog/${id}`} className="flex gap-8 mb-4 pb-5 border-b border-grey items-center">
+    <div  className="flex gap-8 mb-4 pb-5 border-b border-grey items-center">
       <div className="w-full">
       <Link to={`/user/${username}`}>
         <div className="flex items-center gap-2 mb-7">
@@ -34,7 +34,8 @@ const BlogPostCard = ({content, author}) => {
           <p className="min-w-fit">{getDay(publishedAt)}</p>
         </div>
         </Link>
-
+        <Link to={`/blog/${id}`}>
+        
         <h1 className="blog-title font-semibold text-[22px]">{title}</h1>
         <p className="my-3 text-xl font-gelasio leading-7 max-sm:hidden md:max-[1100px] line-clamp-2">
           {des}
@@ -46,11 +47,12 @@ const BlogPostCard = ({content, author}) => {
             {total_likes}
           </span>
         </div>
+        </Link>
       </div>
       <div className="h-28 aspect-square bg-grey">
         <img src={banner} alt="blog_baner" className="w-full h-full aspect-square object-cover" />
       </div>
-    </Link>
+    </div>
   );
 }
 
