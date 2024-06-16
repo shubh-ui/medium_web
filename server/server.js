@@ -407,6 +407,15 @@ server.post('/api/like-blog', verifyJWT, (req, res) => {
                 return res.status(500).json({Error: err.message});
             })
         }
+        else {
+            Notification.findOneAndDelete({ user: user_id , type: "like", blog: _id})
+            .then((result) => {
+                return res.status(200).json({Like_by_user: false});
+            })
+            .catch(err => {
+                return res.status(500).json({Error: err.message});
+            })
+        }
     })
 })
 
