@@ -7,6 +7,7 @@ import { getDay } from "../common/date";
 import BlogInteraction from "../components/blog-interaction.component";
 import BlogPostCard from "../components/blog-post.component";
 import BlogContent from "../components/blog-content.component";
+import CommentsComponent from "../components/comments.component";
 
 export const blogStructure = {
   title: "",
@@ -24,6 +25,8 @@ const BlogPage = () => {
   const [ loading, setLoading ] = useState(true);
   const [ similarBlogs, setSimilarBlogs ] = useState(null);
   const [ isLikedByUser, setLikedByUser ] = useState(false);
+  const [ commentsWrapper, setCommentsWrapper ] = useState(false);
+  const [ totlaParentCommentLoaded, setTotlaParentCommentLoaded ] = useState(0);
 
   let {
     title,
@@ -82,79 +85,94 @@ const BlogPage = () => {
         <Loader />
       ) : (
         // <section>
-          <div className="max-w-[1100px] center py-10 max-lg:px-[5vw]">
-            <img src={banner} alt="blog_img" className="aspect-video" />
-            <blogContext.Provider value={{ blog, setBlog , isLikedByUser, setLikedByUser}}>
-              <div className="mt-12">
-                <h2>{title}</h2>
-                <div className="flex max-sm:flex-col justify-between my-8">
-                  <div className="flex gap-5 items-start">
-                    <img
-                      src={profile_img}
-                      className="w-12 h-12 rounded-full"
-                      alt="profiel_img"
-                    />
-                    <div className="flex flex-col">
-                      <p className="capitalize">{fullname}</p>
-                      <div>
-                        @
-                        <Link
-                          to={`/user/${author_username}`}
-                          className="underline"
-                        >
-                          {author_username}
-                        </Link>
-                      </div>
+        // <CommentsComponent />
+        <blogContext.Provider
+        value={{
+          blog,
+          setBlog,
+          isLikedByUser,
+          setLikedByUser,
+          commentsWrapper,
+          setCommentsWrapper,
+          totlaParentCommentLoaded,
+          setTotlaParentCommentLoaded,
+        }}
+      >
+        <CommentsComponent />
+        <div className="max-w-[1100px] center py-10 max-lg:px-[5vw]">
+          <img src={banner} alt="blog_img" className="aspect-video" />
+
+            <div className="mt-12">
+              <h2>{title}</h2>
+              <div className="flex max-sm:flex-col justify-between my-8">
+                <div className="flex gap-5 items-start">
+                  <img
+                    src={profile_img}
+                    className="w-12 h-12 rounded-full"
+                    alt="profiel_img"
+                  />
+                  <div className="flex flex-col">
+                    <p className="capitalize">{fullname}</p>
+                    <div>
+                      @
+                      <Link
+                        to={`/user/${author_username}`}
+                        className="underline"
+                      >
+                        {author_username}
+                      </Link>
                     </div>
                   </div>
-                  <p className="text-dark-grey opacity-75 max-sm:mt-6 max-sm:ml-12 max-sm:pl-5">
-                    Published On {getDay(publishedAt)}
-                  </p>
                 </div>
+                <p className="text-dark-grey opacity-75 max-sm:mt-6 max-sm:ml-12 max-sm:pl-5">
+                  Published On {getDay(publishedAt)}
+                </p>
               </div>
-              <BlogInteraction />
+            </div>
+            <BlogInteraction />
 
-              <div className="my-12 font-gelasio blog-page-content">
-                {content &&
-                  content[0] &&
-                  content[0].blocks &&
-                  content[0].blocks.map((block, i) => {
-                    return (
-                      <div key={i} className="my-4 md:my-8">
-                        <BlogContent block={block} />
-                      </div>
-                    );
-                  })}
-              </div>
+            <div className="my-12 font-gelasio blog-page-content">
+              {content &&
+                content[0] &&
+                content[0].blocks &&
+                content[0].blocks.map((block, i) => {
+                  return (
+                    <div key={i} className="my-4 md:my-8">
+                      <BlogContent block={block} />
+                    </div>
+                  );
+                })}
+            </div>
 
-              <BlogInteraction />
+            <BlogInteraction />
 
-              {/* similar blog section */}
+            {/* similar blog section */}
 
-              {similarBlogs !== null && similarBlogs.length ? (
-                <>
-                  <h1 className="text-2xl mt-10 mb-14 font-medium">
-                    Similar Blogs
-                  </h1>
-                  {similarBlogs.map((blog, i) => {
-                    let {
-                      author: { personal_info },
-                    } = blog;
-                    return (
-                      <AnimationWrapper
-                        key={i}
-                        transition={{ duration: 1, delay: i * 0.08 }}
-                      >
-                        <BlogPostCard author={personal_info} content={blog} />
-                      </AnimationWrapper>
-                    );
-                  })}
-                </>
-              ) : (
-                ""
-              )}
-            </blogContext.Provider>
-          </div>
+            {similarBlogs !== null && similarBlogs.length ? (
+              <>
+                <h1 className="text-2xl mt-10 mb-14 font-medium">
+                  Similar Blogs
+                </h1>
+                {similarBlogs.map((blog, i) => {
+                  let {
+                    author: { personal_info },
+                  } = blog;
+                  return (
+                    <AnimationWrapper
+                      key={i}
+                      transition={{ duration: 1, delay: i * 0.08 }}
+                    >
+                      <BlogPostCard author={personal_info} content={blog} />
+                    </AnimationWrapper>
+                  );
+                })}
+              </>
+            ) : (
+              ""
+            )}
+        </div>
+        </blogContext.Provider>
+
         // </section>
       )}
     </AnimationWrapper>
