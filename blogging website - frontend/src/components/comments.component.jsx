@@ -20,7 +20,7 @@ const CommentsComponent = () => {
 
       <hr className='border-grey my-8 w-[120%] -ml-10' />
 
-      <CommentField />
+      <CommentField action="Comment" />
     </div>
   );
 }

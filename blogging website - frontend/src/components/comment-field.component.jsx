@@ -1,12 +1,15 @@
 import React, { useState } from "react";
 
-const CommentField = () => {
+const CommentField = ({action}) => {
   const [comment, setComment] = useState("");
   return (
     <>
-      <textarea value={Comment} placeholder="Leave a comment..."
+      <textarea value={comment} placeholder="Leave a comment..."
         className="input-box pl-5 placeholder:text-dark-grey resize-none h-[150px] overflow-auto"
+        onChange={(e) => setComment(e.target.value)}
       ></textarea>
+
+      <button className="btn-dark mt-5 px-10">{action}</button>
     </>
   );
 };
