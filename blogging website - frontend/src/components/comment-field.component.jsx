@@ -11,6 +11,9 @@ const CommentField = ({action}) => {
     if(!access_token) {
       return toast.error("Login is required to leave a comment");
     }
+    if(!comment.length) {
+      return toast.error("Write something to leave a comment...");
+    }
   }
   return (
     <>
