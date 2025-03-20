@@ -41,3 +41,38 @@ A **full-stack** blogging platform similar to [Medium](https://medium.com/), all
 ```sh
 git clone https://github.com/yourusername/blogging-platform.git
 cd blogging-platform
+
+2️⃣ **Install dependencies**  
+```sh
+# Backend
+cd backend
+npm install
+
+# Frontend
+cd ../frontend
+npm install
+
+3️⃣ **Set up environment variables (.env file in backend)**  
+```sh
+MONGO_URI=your-mongodb-uri
+JWT_SECRET=your-secret-key
+CLIENT_URL=http://localhost:3000
+
+4️⃣ ** Run the application**  
+```sh
+# Start Backend
+cd backend
+npm start
+
+# Start Frontend
+cd frontend
+npm start
+
+
+🌐 Open http://localhost:3000 in your browser.
+
+
+📬 Contact
+For questions or suggestions, feel free to reach out:
+
+📧 Email: shubhpatil8510@gmail.com
