@@ -32,8 +32,9 @@ A **full-stack** blogging platform similar to [Medium](https://medium.com/), all
 🔗 **Live Demo:** [your-demo-link.com](https://your-demo-link.com)  
 
 📸 **Screenshots:**  
+![Article Page](screenshots/Login.png)  
 ![Homepage](screenshots/HomePage.png)
-![Article Page](https://via.placeholder.com/800x400)  
+![Article Page](screenshots/Profile.png)  
 
 ## 🚀 Installation & Setup
 
