@@ -39,7 +39,7 @@ A **full-stack** blogging platform similar to [Medium](https://medium.com/), all
 
 1️⃣ **Clone the repository**  
 ```sh
-git clone https://github.com/yourusername/blogging-platform.git
+git clone https://github.com/shubh-ui/medium_web.git
 cd blogging-platform
 
 2️⃣ **Install dependencies**  
