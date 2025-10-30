@@ -14,4 +14,4 @@ export const verifyJWT = (req, res, next) => {
         req.user = user.id;
         next()
     })
-}
+} 
