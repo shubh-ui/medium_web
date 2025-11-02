@@ -1,4 +1,9 @@
+import { nanoid } from "nanoid";
+import cloudinary from 'cloudinary';
+
+
 import blogs from "../Schema/Blog.js"
+
 export const fetchLatestBlogs =  (req, res) => {
     let maxLimit = 5;
     let { page } = req.body;
@@ -237,4 +242,14 @@ export const likeBlog = (req, res) => {
             })
         }
     })
+}
+
+export const imageUpload = (req, res) => {
+    cloudinaryV2.uploader.upload(req.file.path, (error, result) => {
+        if (error) {
+            console.error('Error uploading image:', error);
+            return res.status(500).send('Error uploading image.');
+        }
+        res.json({ imageUrl: result.secure_url });
+    });
 }

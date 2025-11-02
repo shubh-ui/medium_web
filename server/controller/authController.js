@@ -1,3 +1,5 @@
+import bcrypt from "bcrypt";
+
 import { formatDataToSend, generateUsername } from "../utils/common.js";
 
 

@@ -1,11 +1,5 @@
 import express from "express";
-import mogoose from "mongoose"
 import "dotenv/config";
-import bcrypt from "bcrypt";
-import { nanoid } from "nanoid";
-import jwt from "jsonwebtoken";
-import multer from 'multer';
-import cloudinary from 'cloudinary';
 import { connectDB } from "./DB/Dbconfig.js";
 
 // Import only v2 from cloudinary
@@ -27,11 +21,6 @@ server.use('/api', authRoutes);
 
 connectDB();
 
-
-
-
-
-
 server.get("/", (req, res) => {
     console.log("Home route hit");
     res.send("Home Route")
@@ -44,19 +33,8 @@ cloudinaryV2.config({
     api_secret: 'SdVxrJtRH4r33fvHSPRCHwJ6Oms'
 });
 
-const upload = multer({ dest: 'uploads/' });
 
-server.post('/api/upload', upload.single('image'), (req, res) => {
-    cloudinaryV2.uploader.upload(req.file.path, (error, result) => {
-        if (error) {
-            console.error('Error uploading image:', error);
-            return res.status(500).send('Error uploading image.');
-        }
-        res.json({ imageUrl: result.secure_url });
-    });
-});
-
-  server.post('/api/search-users', (req, res) => {
+server.post('/api/search-users', (req, res) => {
     let { query } = req.body;
     User.find({ "personal_info.username": new RegExp(query, "i") })
       .limit(50)
