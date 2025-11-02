@@ -1,6 +1,7 @@
 import bcrypt from "bcrypt";
 
 import { formatDataToSend, generateUsername } from "../utils/common.js";
+import User from "../Schema/User.js";
 
 
 let emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/; // regex for email

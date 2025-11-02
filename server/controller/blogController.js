@@ -3,6 +3,8 @@ import cloudinary from 'cloudinary';
 
 
 import blogs from "../Schema/Blog.js"
+import Notification from "../Schema/Notification.js";
+import User from "../Schema/User.js";
 
 export const fetchLatestBlogs =  (req, res) => {
     let maxLimit = 5;

@@ -1,5 +1,6 @@
 import jwt from "jsonwebtoken";
 import { nanoid } from "nanoid";
+import User from "../Schema/User.js";
 
 
 export const generateUsername = async (email) => {

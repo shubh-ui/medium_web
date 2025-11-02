@@ -7,10 +7,13 @@ import {
   searchBlogCount,
   createBlog,
   getBlog,
-  likeBlog
+  likeBlog,
+  imageUpload
 } from '../controller/blogController.js';
 import { verifyJWT } from '../middleware/authMiddleware.js';
+import multer from 'multer';
 const router = express.Router();
+const upload = multer({ dest: 'uploads/' });
 
 router.post('/latest-blogs', fetchLatestBlogs);
 router.post('/all-latest-blog-count', fetchLatestBlogCount);
@@ -20,6 +23,7 @@ router.post('/search-blog-count', searchBlogCount);
 router.post('/create-blog',verifyJWT, createBlog);
 router.post('/get-blog', getBlog);
 router.post('/like-blog', verifyJWT, likeBlog);
+router.post('/upload', upload.single('image'), imageUpload);
 
 
 export default router;
