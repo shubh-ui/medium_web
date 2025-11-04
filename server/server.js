@@ -1,5 +1,6 @@
 import express from "express";
 import "dotenv/config";
+import cors from "cors";
 import { connectDB } from "./DB/Dbconfig.js";
 
 // Import only v2 from cloudinary
@@ -14,6 +15,13 @@ const PORT =  3000;
 const server = express();
 
 server.use(express.json());
+server.use(cors({
+    origin:[
+        'https://medium-web-dza1.vercel.app/',
+    ],
+    methods:['GET', 'POST', 'PUT', 'DELETE'],
+    credentials:true
+}))
 server.use('/api', blogRoutes);
 server.use('/api', authRoutes);
 server.use('/api', userRoutes);
