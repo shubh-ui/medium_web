@@ -17,7 +17,7 @@ const server = express();
 server.use(express.json());
 server.use(cors({
     origin:[
-        'https://medium-web-dza1.vercel.app/',
+        'https://medium-web-dza1.vercel.app',
     ],
     methods:['GET', 'POST', 'PUT', 'DELETE'],
     credentials:true
