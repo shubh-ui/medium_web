@@ -13,7 +13,8 @@ import {
 import { verifyJWT } from '../middleware/authMiddleware.js';
 import multer from 'multer';
 const router = express.Router();
-const upload = multer({ dest: 'uploads/' });
+// const upload = multer({ dest: 'uploads/' });
+const upload = multer({ storage: multer.memoryStorage() });
 
 router.post('/latest-blogs', fetchLatestBlogs);
 router.post('/all-latest-blog-count', fetchLatestBlogCount);
